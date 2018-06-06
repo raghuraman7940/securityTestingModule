@@ -1,0 +1,32 @@
+#launch_zap{
+	cursor:pointer;
+}
+
+#trigger_selenium{
+	cursor:pointer;
+}
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 30px;
+    transition: 0.4s;
+    
+}
+
+.active, .accordion:hover {
+    background-color: #ccc; 
+}
+.panel {
+    padding: 0 18px;
+    display: none;
+
+    background-color: white;
+    overflow: hidden;
+}
+
