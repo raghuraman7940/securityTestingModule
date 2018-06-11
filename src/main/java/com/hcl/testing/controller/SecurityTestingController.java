@@ -66,6 +66,67 @@ public class SecurityTestingController {
 //		 // zapapi initialize
 //		zapapi = new ClientApi(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
 	}
+	
+	/**
+	 * Execute Issue - REST API Call with JIRA.
+	 * 
+	 * @return String String
+	 * @throws JSONException 
+	 * @throws JiraException
+	 *             JiraException
+	 */
+	@CrossOrigin
+	@RequestMapping(value = "/zapconfig", method = RequestMethod.POST)
+	public ResponseEntity<String> SaveZapConfig(@RequestBody String zapoptions) throws JSONException   {
+		System.out.println("POST api/zapconfig  "+zapoptions);
+		JSONObject jsonObject = new JSONObject(zapoptions.toString());
+		JSONObject repjsonObject = new JSONObject();
+		String message = null;
+		try {
+			
+//			 // zapapi initialize
+//			System.out.println("zaphostname: "+properties.getzaphostname());
+//			System.out.println("zapPort: "+properties.getzapport());
+//			System.out.println("zapapikey: "+properties.getzapapikey());
+//			
+			/* Search for issues */
+			String zaphostname = jsonObject.getString("zaphostname");//"zaphostname";
+			String zapport = jsonObject.getString("zapport");//"zapport";
+			String zapapikey = jsonObject.getString("zapapikey");//"zapapikey";
+			String zapjql = "zaphostname = " + zaphostname + " AND zapport = " + zapport + " AND zapapikey = " + zapapikey ;
+		
+			properties.setzaphostname(zaphostname);
+			properties.setzapport( Integer.parseInt(zapport));
+			properties.setzapapikey(zapapikey);
+			
+			String conf_zaphostname =properties.getzaphostname();
+			int conf_zapport =properties.getzapport();
+			String conf_zapapikey = properties.getzapapikey();
+			 // zapapi initialize
+			System.out.println("zaphostname: "+properties.getzaphostname());
+			System.out.println("zapPort: "+properties.getzapport());
+			System.out.println("zapapikey: "+properties.getzapapikey());
+			
+			JSONObject sprintJSON = new JSONObject();
+			//jsonObject.put("id", zapOption);
+			sprintJSON.put("zaphostname",conf_zaphostname);
+			sprintJSON.put("zapport",conf_zapport);
+			sprintJSON.put("zapapikey", conf_zapapikey);
+			
+			System.out.println("zapconfig Update:"+zapjql.toString());
+//			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+//			message=gson.toJson(message);
+			repjsonObject.put("zapconfigvalues", sprintJSON);
+			repjsonObject.put("message", "Zap Configured updated successfully");
+			
+			message = repjsonObject.toString();
+			//message = "{\"message\" : \"Zap Configured successfully\" }";
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+	
 
 	/**
 	 * Get Zap Options - REST API Call with ZAP.
@@ -76,9 +137,21 @@ public class SecurityTestingController {
 	@RequestMapping(value = "/launchzap", method = RequestMethod.GET)
 	public ResponseEntity<String> launchzap() { 
 		String message = null;
+		boolean islaunchedzap;
 		System.out.println("GET api/launchzap");
 		try {
-			securityService.launchZap(properties.getZapLocation());
+			
+			islaunchedzap=zap.CheckIfZAPHasStartedOrNot(properties.getzaphostname(), properties.getzapport());
+			//System.out.println("islaunchedzap1:"+islaunchedzap);
+			if(islaunchedzap==false) {
+				securityService.launchZap(properties.getZapLocation());
+				islaunchedzap=zap.CheckIfZAPHasStartedOrNot(properties.getzaphostname(), properties.getzapport());
+				//System.out.println("islaunchedzap1:"+islaunchedzap);
+			}
+//			 // zapapi initialize
+//			System.out.println("zaphostname: "+properties.getzaphostname());
+//			System.out.println("zapPort: "+properties.getzapport());
+//			System.out.println("zapapikey: "+properties.getzapapikey());
 			zapapi = new ClientApi(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
 			zap.startSession(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
 			message = "{\"message\" : \"Zap launched successfully\" }";

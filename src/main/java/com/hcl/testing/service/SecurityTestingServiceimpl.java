@@ -65,6 +65,14 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 				case "fuzzer":
 				     break;
 				case "selenium":
+					try {
+						SeleniumTestClass sc = new SeleniumTestClass();
+						sc.setUp();
+						message=zap.checkErrors(zapapi,ZAP_URI_PORT);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				     break;
 				 default:
 			}

@@ -21,6 +21,11 @@ public class SeleniumTestClass {
 		this.setDriver(driver);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		testAll();
+		
+		driver.close();
+		Thread.sleep(3000);
+		driver.quit();
+		System.out.println("SeleniumTest Done ");
 	}
 	public void tstMenuLinks() {
 		checkMenuLinks("home.jsp");

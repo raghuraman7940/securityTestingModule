@@ -1,8 +1,12 @@
 package com.hcl.testing.service;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +77,46 @@ public class ZapTools {
 		}
 	}
 
+
+	public boolean CheckIfZAPHasStartedOrNot(String ZAP_ADDRESS, int ZAP_PORT) throws IOException, InterruptedException {
+	 String zapApiUrl = "http://"+ZAP_ADDRESS+":"+ZAP_PORT;
+	 System.out.println("zapApiUrl :"+zapApiUrl);
+	 URL url = new URL(zapApiUrl);
+	 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+	 connection.setRequestMethod("GET");
+	 int MaxRetries=0;
+	 int numberOfRetries = 0;
+	 boolean result=false;
+	 while (numberOfRetries <= MaxRetries) {
+		 try {
+			 BufferedReader in = new BufferedReader(new InputStreamReader(
+			 connection.getInputStream()));
+			 String inputLine;
+			 StringBuffer response = new StringBuffer();
+			 while ((inputLine = in.readLine()) != null) {
+				 response.append(inputLine);
+			 }
+			 in.close();
+			 System.out.println(response.toString());
+			 System.out.println("Response received from the API endpoint. ZAP should be up by now");
+			 result=true;
+			 break;
+		 } catch (ConnectException e) {
+			 System.out.println("No response received from the API endpoint. Seems like ZAP has not started yet, let's keep polling");
+			 if (MaxRetries>0)
+			 {
+				 if(numberOfRetries >= MaxRetries){
+					 System.out.println("Tried " + numberOfRetries + " of times, couldn't get a response from the ZAP API endpoint");
+				 }
+			 }
+			 continue;
+		 } finally {
+			 ++numberOfRetries;
+			 Thread.sleep(5000);
+	 	}
+	 }
+	 	return result;
+	}
 	public String ascan(ClientApi api, String ZAP_URI_PORT) throws InterruptedException {
 		try {
 			 int progress;
@@ -143,7 +187,7 @@ public class ZapTools {
 		}
 	}
 	
-	public String checkErrors(ClientApi api) {
+	public String checkErrors(ClientApi api, String ZAP_URI_PORT) {
 		String errors = "";
 		List<Alert> ignoreAlerts = new ArrayList<>(2);
 		//ignoreAlerts.add(new Alert("Cookie set without HttpOnly flag", null, Risk.Low, Reliability.Warning, null, null) {});
@@ -152,6 +196,10 @@ public class ZapTools {
 		try {
 			System.out.println("Checking Alerts...");
 			api.checkAlerts(ignoreAlerts, null);
+			 ApiResponse resp =api.core.alertsSummary(ZAP_URI_PORT);
+				//System.out.println("Checking Alerts..."+resp.toString());
+				errors=resp.toString();
+			 //errors=new String(api.core.alertsSummary(ZAP_URI_PORT));
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			errors = ex.getMessage();
