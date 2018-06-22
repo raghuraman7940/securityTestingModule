@@ -1,6 +1,9 @@
 package com.hcl.testing.service;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -8,6 +11,7 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.zaproxy.clientapi.core.Alert;
@@ -17,6 +21,7 @@ import org.zaproxy.clientapi.core.ClientApi;
 import org.zaproxy.clientapi.core.ClientApiException;
 import org.zaproxy.clientapi.core.ClientApiMain;
 import org.zaproxy.clientapi.gen.Spider;
+
 
 public class ZapTools {
 	
@@ -198,7 +203,10 @@ public class ZapTools {
 			api.checkAlerts(ignoreAlerts, null);
 			 ApiResponse resp =api.core.alertsSummary(ZAP_URI_PORT);
 				//System.out.println("Checking Alerts..."+resp.toString());
+			 
 				errors=resp.toString();
+			
+				this.StoreRespose(errors);
 			 //errors=new String(api.core.alertsSummary(ZAP_URI_PORT));
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -206,4 +214,45 @@ public class ZapTools {
 		}
 		return errors;
 	}
+	
+	/*************************************************************************************************
+	 *  Function name 		: StoreRespose
+	 *  Reuse Function 		: 
+	 *  Description 		: Store the Web services Response to local src/res/Response path
+	/**************************************************************************************************/
+    public String StoreRespose(String Value)throws FileNotFoundException
+    {
+    	
+    	String RespPath=null;
+    	String Filename;
+    	
+    	Date d = new Date();
+		String date=d.toString().replaceAll(" ", "_");
+		date=date.replaceAll(":", "_");
+		date=date.replaceAll("\\+", "_");
+		Filename="Reports"+"_"+date;
+		
+    	File file = new File(System.getProperty("user.dir")+"/Reports/"+Filename+".json");
+    	System.out.println("Response stored Path : "+file.getAbsolutePath());	
+		try (FileOutputStream fop = new FileOutputStream(file)) 
+		{
+			// if file doesn't exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			// get the content in bytes
+			byte[] contentInBytes = Value.getBytes();
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+			//URL myUrl = file.toURI().toURL();
+			RespPath=file.getAbsolutePath();
+			System.out.println("Response stored Path : "+RespPath);	
+			///current_TestCase_xls.setCellData(Constants.TEST_STEPS_SHEET, Constants.Response, rowNum,myUrl.toString());
+			return RespPath;
+			
+		}
+     catch (IOException e) {e.printStackTrace();}
+		return RespPath;
+    }
 }

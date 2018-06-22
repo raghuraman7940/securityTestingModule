@@ -53,8 +53,6 @@ public class SecurityTestingController {
 	 * 
 	 * @param properties
 	 *            properties
-	 * @throws JiraException
-	 *             JiraException
 	 * @throws URISyntaxException 
 	 */
 	@Autowired
@@ -67,13 +65,42 @@ public class SecurityTestingController {
 //		zapapi = new ClientApi(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
 	}
 	
+	
 	/**
-	 * Execute Issue - REST API Call with JIRA.
+	 * Get Zap Options - REST API Call with ZAP.
+	 * 
+	 * @return String String
+	 */
+	@CrossOrigin
+	@RequestMapping(value = "/zapconfig", method = RequestMethod.GET)
+	public ResponseEntity<String> getzapconfig()   {
+		String message = null;
+		System.out.println("GET api/getzapoptions  ");
+		try {
+			 // zapapi initialize
+			//	System.out.println("zaphostname: "+properties.getzaphostname());
+			//	System.out.println("zapPort: "+properties.getzapport());
+			//	System.out.println("zapapikey: "+properties.getzapapikey());
+		
+				//System.out.println("zapOption :"+zapOption);
+				JSONObject jsonObject = new JSONObject();
+				//jsonObject.put("id", zapOption);
+				jsonObject.put("zaphostname",properties.getzaphostname());
+				jsonObject.put("zapport",properties.getzapport());
+				jsonObject.put("zapapikey", properties.getzapapikey());
+				
+				message = jsonObject.toString();
+				//{"zaphostname":"localhost","zapport":"8080","zapapikey":"fn4ism7pac59tdfac434mvmpao"}
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+	/**
+	 * zapconfig - REST API Call with Application properties.
 	 * 
 	 * @return String String
 	 * @throws JSONException 
-	 * @throws JiraException
-	 *             JiraException
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "/zapconfig", method = RequestMethod.POST)
@@ -88,8 +115,10 @@ public class SecurityTestingController {
 //			System.out.println("zaphostname: "+properties.getzaphostname());
 //			System.out.println("zapPort: "+properties.getzapport());
 //			System.out.println("zapapikey: "+properties.getzapapikey());
+
 //			
 			/* Search for issues */
+//			{"zaphostname":"localhost","zapport":"8080","zapapikey":"fn4ism7pac59tdfac434mvmpao"}
 			String zaphostname = jsonObject.getString("zaphostname");//"zaphostname";
 			String zapport = jsonObject.getString("zapport");//"zapport";
 			String zapapikey = jsonObject.getString("zapapikey");//"zapapikey";
@@ -230,12 +259,10 @@ public class SecurityTestingController {
 	
 	
 	/**
-	 * Execute Issue - REST API Call with JIRA.
+	 * Execute Zap Proxy options - REST API Call.
 	 * 
 	 * @return String String
 	 * @throws JSONException 
-	 * @throws JiraException
-	 *             JiraException
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "/executezapproxy", method = RequestMethod.POST)
@@ -244,14 +271,11 @@ public class SecurityTestingController {
 		JSONObject jsonObject = new JSONObject(zapoptions.toString());
 		String message = null;
 		try {
-			/* Search for issues */
-			String appln = jsonObject.getString("application");//"COB";
-			String zapotion = jsonObject.getString("zapoption");//"Test";
+			String appln = jsonObject.getString("application");//"application url";
+			String zapotion = jsonObject.getString("zapoption");//"spider";
 			String zapjql = "Testapplication = " + appln + " AND zapotion = " + zapotion ;
 		
 			System.out.println("Execute Query:"+zapjql.toString());
-//			DriverScript test = new DriverScript();
-//			JsonObject js= test.startDriverScript(jira,jql,properties);
 			message=securityService.ExecuteZap(zapapi, appln, zapotion);
 			//message = "{\"message\" : \"Zap execution success\" }";
 //			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
@@ -278,28 +302,28 @@ public class SecurityTestingController {
         return new ResponseEntity(HttpStatus.OK);
     }
 	 
-		/**
-		 * Login - REST API Call with ZAP.
-		 * 
-		 * @return String String
-		 */
-		@RequestMapping(value = "/login", method = RequestMethod.POST)
-		public ResponseEntity<String> login(@RequestBody String login)  {
-			String message = null;
-			System.out.println("POST api/login  "+login);
-			try {
-				JSONObject jsonObject = new JSONObject(login.toString());
-				String username = jsonObject.getString("username");
-				String password = jsonObject.getString("password");
-				System.out.println("Credentials :"+username+password);
-				System.out.println("Properties URl:"+properties.getUrl());
-				//jira = new JiraClient(properties.getUrl(), creds);
-				message = login;
-			} catch (Exception e) {
-				message = e.getMessage() + ". Please check your JIRA Username and Password.";
-			}
-
-			return new ResponseEntity<>(message, HttpStatus.OK);
+	/**
+	 * Login - REST API Call with ZAP.
+	 * 
+	 * @return String String
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseEntity<String> login(@RequestBody String login)  {
+		String message = null;
+		System.out.println("POST api/login  "+login);
+		try {
+			JSONObject jsonObject = new JSONObject(login.toString());
+			String username = jsonObject.getString("username");
+			String password = jsonObject.getString("password");
+			System.out.println("Credentials :"+username+password);
+			System.out.println("Properties URl:"+properties.getUrl());
+			//jira = new JiraClient(properties.getUrl(), creds);
+			message = login;
+		} catch (Exception e) {
+			message = e.getMessage() + ". Please check your JIRA Username and Password.";
 		}
+
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
 
 }

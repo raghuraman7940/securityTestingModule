@@ -40,7 +40,7 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 	public void executeseleniumModule() {
 		// TODO Auto-generated method stub
 		try {
-			SeleniumTestClass sc = new SeleniumTestClass();
+			SeleniumTestClass sc = new SeleniumTestClass("");
 			sc.setUp();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -56,9 +56,11 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 			{
 				case "spider":
 					message=zap.spider(zapapi, ZAP_URI_PORT);
+					message=zap.checkErrors(zapapi,ZAP_URI_PORT);
 					break;
 				case "ascan":	
 					message=zap.ascan(zapapi, ZAP_URI_PORT);
+					message=zap.checkErrors(zapapi,ZAP_URI_PORT);
 				     break;
 				case "ajaxspider":
 				     break;
@@ -66,7 +68,7 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 				     break;
 				case "selenium":
 					try {
-						SeleniumTestClass sc = new SeleniumTestClass();
+						SeleniumTestClass sc = new SeleniumTestClass(ZAP_URI_PORT);
 						sc.setUp();
 						message=zap.checkErrors(zapapi,ZAP_URI_PORT);
 					} catch (Exception e) {

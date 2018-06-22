@@ -11,7 +11,13 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 public class SeleniumTestClass {
 	WebDriver driver;
 	String site = "http://localhost:8888/bodgeit/";
+	
+	public SeleniumTestClass(String applnsite)
+	{
+		site=applnsite;
+	}
 	public void setUp() throws Exception {
+		
 		Proxy proxy = new Proxy(); // org.openqa.selenium.Proxy
 		proxy.setHttpProxy("localhost:8080");
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
