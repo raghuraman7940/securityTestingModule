@@ -122,7 +122,7 @@ public class ZapTools {
 	 }
 	 	return result;
 	}
-	public String ascan(ClientApi api, String ZAP_URI_PORT) throws InterruptedException {
+	public String ascan(ClientApi api, String ZAP_URI_PORT) throws InterruptedException, FileNotFoundException {
 		try {
 			 int progress;
 			   String scanid;
@@ -146,7 +146,8 @@ public class ZapTools {
 
 	            
 	            String AscanReport=new String(api.core.jsonreport());
-	            System.out.println(AscanReport);
+//	            System.out.println(AscanReport);
+	            this.StoreRespose("Report_AScan",AscanReport);
 	            return AscanReport; 
 			//return true;
 		} catch (ClientApiException ex) {
@@ -155,7 +156,7 @@ public class ZapTools {
 		}
 	}
 
-	public String spider(ClientApi api, String ZAP_URI_PORT) throws InterruptedException {
+	public String spider(ClientApi api, String ZAP_URI_PORT) throws InterruptedException, FileNotFoundException {
 		try{
 			System.out.println("Spider scan starting...");
 			
@@ -183,7 +184,8 @@ public class ZapTools {
             //System.out.println("Spider Alerts:"+resp.toString());
            // System.out.println(new String(api.core.jsonreport()));
             String SpiderReport=new String(api.core.jsonreport());
-            System.out.println(SpiderReport);
+           // System.out.println(SpiderReport);
+            this.StoreRespose("Report_Spider",SpiderReport);
             return SpiderReport;
 			//return true;
 		} catch(ClientApiException ex) {
@@ -199,14 +201,21 @@ public class ZapTools {
 		//ignoreAlerts.add(new Alert(null, null, Risk.Low, Reliability.Warning, null, null));
 		//ignoreAlerts.add(new Alert(null, null, Risk.Informational, Reliability.Warning, null, null));
 		try {
-			System.out.println("Checking Alerts...");
-			api.checkAlerts(ignoreAlerts, null);
-			 ApiResponse resp =api.core.alertsSummary(ZAP_URI_PORT);
-				//System.out.println("Checking Alerts..."+resp.toString());
-			 
-				errors=resp.toString();
+//			System.out.println("Checking Alerts...");
+//			api.checkAlerts(ignoreAlerts, null);
+//			 ApiResponse resp =api.core.alertsSummary(ZAP_URI_PORT);
+//				//System.out.println("Checking Alerts..."+resp.toString());
+//			 
+//				errors=resp.toString();
 			
-				this.StoreRespose(errors);
+				//System.out.println("Checking Alerts Summary..."+resp.toString());
+				
+				
+				  // System.out.println(new String(api.core.jsonreport()));
+	            errors=new String(api.core.jsonreport());
+	          //  System.out.println("Checking Json report..."+errors);
+	        	this.StoreRespose("Report_ZAP",errors);
+	          
 			 //errors=new String(api.core.alertsSummary(ZAP_URI_PORT));
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -220,7 +229,7 @@ public class ZapTools {
 	 *  Reuse Function 		: 
 	 *  Description 		: Store the Web services Response to local src/res/Response path
 	/**************************************************************************************************/
-    public String StoreRespose(String Value)throws FileNotFoundException
+    public String StoreRespose(String fname,String Value)throws FileNotFoundException
     {
     	
     	String RespPath=null;
@@ -231,9 +240,14 @@ public class ZapTools {
 		date=date.replaceAll(":", "_");
 		date=date.replaceAll("\\+", "_");
 		Filename="Reports"+"_"+date;
+		if (fname.length()>0)
+		{
+			Filename=fname+"_"+date;;
+		}
+		
 		
     	File file = new File(System.getProperty("user.dir")+"/Reports/"+Filename+".json");
-    	System.out.println("Response stored Path : "+file.getAbsolutePath());	
+    	//System.out.println("Response stored Path : "+file.getAbsolutePath());	
 		try (FileOutputStream fop = new FileOutputStream(file)) 
 		{
 			// if file doesn't exists, then create it

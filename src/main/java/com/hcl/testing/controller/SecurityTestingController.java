@@ -47,6 +47,8 @@ public class SecurityTestingController {
 	ClientApi zapapi=null;
 	
 	ZapTools zap = null;
+	
+	public String TargetApplication="http://localhost:8888/bodgeit/";
 	/**
 	 * 
 	 * Constructor for configuring the properties.
@@ -249,6 +251,30 @@ public class SecurityTestingController {
 			}
 			jsonObject.put("ZapOptions", jsonArray);
 			message = jsonObject.toString();
+//			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+//			message=gson.toJson(message);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * Get Zap Options - REST API Call with ZAP.
+	 * 
+	 * @return String String
+	 * @throws JSONException 
+	 */
+	@CrossOrigin
+	@RequestMapping(value = "/generateReports", method = RequestMethod.GET)
+	public ResponseEntity<String> getReports() throws JSONException   {
+		String message = null;
+		System.out.println("GET api/generateReports  ");
+//		JSONObject jsonObject = new JSONObject(zapoptions.toString());
+		try {
+			//String appln = jsonObject.getString("application");//"application url";
+			message=zap.checkErrors(zapapi,TargetApplication);
 //			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 //			message=gson.toJson(message);
 		} catch (Exception e) {

@@ -156,13 +156,12 @@
                                         <h3 align="center">Start security Scan</h3>
                                     </div>
                                 </div>
-                                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12"  onclick="GetReports()">
                                     <div class="tile-stats">
                                         <div class="icon"><i class="fa fa-file-excel-o" style="font-size:36px"></i>
                                         </div>
-                                        <div class="count" id="total-refund">&nbsp;</div>
-                                        <a href="/reports.html"><h3 align="center">Reports</h3></a>
-
+                                        <div class="count">&nbsp;</div>
+                                        <h3 align="center">Reports</h3>
                                         
                                     </div>
                                 </div>
@@ -224,6 +223,22 @@
                                         </div>
                                     </form>
                                 </div>
+
+                                <div id="ReportDisplay" class="panel">
+                                    <form >
+                                        <div class="container">
+                                            <h1 align="center">ZAP Proxy Report</h1>
+                                            <hr>
+                                            <!-- <label for="target Application"><b>Targeted Websites</b></label>
+                                            <input type="text" placeholder="Enter Targeted Website"  id="ReportTargeted" name="ReportTargeted" required>
+                                            <button style="width:50%"  onclick="GetReports()" type="submit"  >Generate Report</button> -->
+                                            <p id="zapReports"></p>
+                                            <hr>
+                                        </div>
+                                    </form>
+                                </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -579,8 +594,75 @@ function StartZapScan() {
     }
 }
 
+function DisplayReportsWindow() {
+    var x = document.getElementById("ReportDisplay");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+}
 
 
+function GetReports() {
+
+  
+    var x = document.getElementById("ReportDisplay");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+
+    } else {
+        x.style.display = "block";
+
+        //var TargetedWebsites = document.getElementById("ReportTargeted").value;
+
+     //alert("TargetedWebsites: " +TargetedWebsites+" zapoptions:"+zapoptions); 
+    //  $.ajax({
+    //         url : "/api/generateReports",
+    //         type: 'POST',
+    //         contentType: 'application/json',
+    //         dataType : "json",
+    //         data:JSON.stringify({"application": TargetedWebsites}),
+    //         success:function(data) { 
+    //             alert("Get Reports: " +JSON.stringify(data)); 
+    //             var jsobj =JSON.parse(data);
+    //             var myObj=jsobj.site.alerts;
+    //             for (x in myObj) {
+    //                 alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
+    //             }
+            
+    //         },
+    //         error: function() {
+    //             alert("Error Ajx: " +data); 
+    //         }
+    //     });
+    // }
+        $.get("/api/generateReports", function(data, status){
+            //alert("Data2: " + data + "\nStatus: " + status);
+   
+
+               // alert("Get Reports: " +JSON.stringify(data)); 
+                var jsobj =JSON.parse(data);
+                var myObj=jsobj.site.alerts;
+                var txt="";
+                txt += "<table border='1'>"
+                    txt += "<tr><th>AlertID</th><th>AlertName</th><th>Risk Level</th><th>Alert Description</th><th>Solution</th></tr>";
+                    
+                for (x in myObj) {
+                  //  alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
+                    txt += "<tr><td>" + myObj[x].pluginid + "</td><td>" + myObj[x].name + "</td><td>" + myObj[x].riskdesc + "</td><td>" + myObj[x].desc + "</td><td>" + myObj[x].solution + "</td></tr>";
+                }
+                txt += "</table>"  
+                document.getElementById("zapReports").innerHTML = txt;
+            
+                //alert("zaphostname: " + jsobj.zaphostname + "\zapport: " + jsobj.zapport);
+                // document.getElementById("hostname").value = jsobj.zaphostname;
+                // document.getElementById("port").value = jsobj.zapport 
+                // document.getElementById("ApiKey").value = jsobj.zapapikey 
+            });
+        }
+    
+}
 
 
 function SaveConfig(){

@@ -56,11 +56,11 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 			{
 				case "spider":
 					message=zap.spider(zapapi, ZAP_URI_PORT);
-					message=zap.checkErrors(zapapi,ZAP_URI_PORT);
+//					message=zap.checkErrors(zapapi,ZAP_URI_PORT);
 					break;
 				case "ascan":	
 					message=zap.ascan(zapapi, ZAP_URI_PORT);
-					message=zap.checkErrors(zapapi,ZAP_URI_PORT);
+//					message=zap.checkErrors(zapapi,ZAP_URI_PORT);
 				     break;
 				case "ajaxspider":
 				     break;
