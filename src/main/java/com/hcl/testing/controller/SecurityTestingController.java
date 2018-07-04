@@ -119,7 +119,7 @@ public class SecurityTestingController {
 //			System.out.println("zapapikey: "+properties.getzapapikey());
 
 //			
-			/* Search for issues */
+			/* Search for zapconfig */
 //			{"zaphostname":"localhost","zapport":"8080","zapapikey":"fn4ism7pac59tdfac434mvmpao"}
 			String zaphostname = jsonObject.getString("zaphostname");//"zaphostname";
 			String zapport = jsonObject.getString("zapport");//"zapport";
@@ -133,10 +133,11 @@ public class SecurityTestingController {
 			String conf_zaphostname =properties.getzaphostname();
 			int conf_zapport =properties.getzapport();
 			String conf_zapapikey = properties.getzapapikey();
-			 // zapapi initialize
-			System.out.println("zaphostname: "+properties.getzaphostname());
-			System.out.println("zapPort: "+properties.getzapport());
-			System.out.println("zapapikey: "+properties.getzapapikey());
+//			
+//			 // zapapi initialize
+//			System.out.println("zaphostname: "+properties.getzaphostname());
+//			System.out.println("zapPort: "+properties.getzapport());
+//			System.out.println("zapapikey: "+properties.getzapapikey());
 			
 			JSONObject sprintJSON = new JSONObject();
 			//jsonObject.put("id", zapOption);
@@ -160,7 +161,7 @@ public class SecurityTestingController {
 	
 
 	/**
-	 * Get Zap Options - REST API Call with ZAP.
+	 * Launch Zap - REST API Call with ZAP.
 	 * 
 	 * @return String String
 	 */
@@ -196,7 +197,7 @@ public class SecurityTestingController {
 	
 	
 	/**
-	 * Get Zap Options - REST API Call with ZAP.
+	 * Stop Zap - REST API Call with ZAP.
 	 * 
 	 * @return String String
 	 */
@@ -204,11 +205,15 @@ public class SecurityTestingController {
 	@RequestMapping(value = "/stopzap", method = RequestMethod.GET)
 	public ResponseEntity<String> stopzap() { 
 		String message = null;
+		boolean islaunchedzap;
 		System.out.println("GET api/stopzap");
 		try {
-			zap.saveSession(zapapi, "Vulnerable");
-			zap.stopZAP(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
-			message = "{\"message\" : \"Zap Stopped successfully\" }";
+			islaunchedzap=zap.CheckIfZAPHasStartedOrNot(properties.getzaphostname(), properties.getzapport());
+			if(islaunchedzap==true) {
+				zap.saveSession(zapapi, "Vulnerable");
+				zap.stopZAP(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
+				message = "{\"message\" : \"Zap Stopped successfully\" }";
+			}
 //			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 //			message=gson.toJson(message);
 		} catch (Exception e) {
@@ -226,31 +231,39 @@ public class SecurityTestingController {
 	@RequestMapping(value = "/getzapoptions", method = RequestMethod.GET)
 	public ResponseEntity<String> getProjects()   {
 		String message = null;
-		System.out.println("GET api/getzapoptions  ");
+		boolean islaunchedzap;
+		System.out.println("GET api/getzapoptions");
 		try {
-			System.out.println("Properties getZapOptions:"+properties.getZapOptions());
-			JSONObject jsonObject = new JSONObject();
-			JSONArray jsonArray = new JSONArray();
-			String propZapOptions = properties.getZapOptions();
-			
+			//System.out.println("Properties getZapOptions:"+properties.getZapOptions());
 			 // zapapi initialize
 //				System.out.println("zaphostname: "+properties.getzaphostname());
 //				System.out.println("zapPort: "+properties.getzapport());
 //				System.out.println("zapapikey: "+properties.getzapapikey());
-				
-			List<String> lstpropZapOptions = Arrays.asList(propZapOptions.split(","));
-			//System.out.println("lstpropZapOptions :"+lstpropZapOptions);
-			for (String zapOption : lstpropZapOptions) {
-				//System.out.println("zapOption :"+zapOption);
-				JSONObject sprintJSON = new JSONObject();
-				//jsonObject.put("id", zapOption);
-				sprintJSON.put("name",zapOption);
-				sprintJSON.put("Description","Description");
-				sprintJSON.put("enabled", true);
-				jsonArray.put(sprintJSON);
+			islaunchedzap=zap.CheckIfZAPHasStartedOrNot(properties.getzaphostname(), properties.getzapport());
+			//System.out.println("islaunchedzap1:"+islaunchedzap);
+			if(islaunchedzap==true) {
+				JSONObject jsonObject = new JSONObject();
+				JSONArray jsonArray = new JSONArray();
+				String propZapOptions = properties.getZapOptions();
+				List<String> lstpropZapOptions = Arrays.asList(propZapOptions.split(","));
+				//System.out.println("lstpropZapOptions :"+lstpropZapOptions);
+				for (String zapOption : lstpropZapOptions) {
+					//System.out.println("zapOption :"+zapOption);
+					JSONObject sprintJSON = new JSONObject();
+					//jsonObject.put("id", zapOption);
+					sprintJSON.put("name",zapOption);
+					sprintJSON.put("Description","Description");
+					sprintJSON.put("enabled", true);
+					jsonArray.put(sprintJSON);
+				}
+				jsonObject.put("ZapOptions", jsonArray);
+				message = jsonObject.toString();
 			}
-			jsonObject.put("ZapOptions", jsonArray);
-			message = jsonObject.toString();
+			else
+			{
+				return new ResponseEntity<>("ZAP not started", HttpStatus.INTERNAL_SERVER_ERROR);
+				
+			}
 //			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 //			message=gson.toJson(message);
 		} catch (Exception e) {
@@ -261,7 +274,7 @@ public class SecurityTestingController {
 	
 	
 	/**
-	 * Get Zap Options - REST API Call with ZAP.
+	 * Generate Json Report  - REST API Call with ZAP.
 	 * 
 	 * @return String String
 	 * @throws JSONException 
@@ -321,6 +334,7 @@ public class SecurityTestingController {
 		securityService.executeseleniumModule();
 	    return "seleniumTriggered";
 	}
+	
 	 @RequestMapping("/home")
 	public ResponseEntity dashboard() throws InterruptedException {
 		 System.out.println("POST api/home");

@@ -129,91 +129,92 @@
  
         <!-- page content -->
         <div class="right_col" role="main">
-         <button class="accordion">Security Testing</button>
-       	 <div class="panel">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="">
-                        <div class="x_content">
-                            <div class="row">
-                                <div  class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="GetZappconfig()">
-                                    <div class="tile-stats">
-                                        <div class="icon" ><i  class="fa fa-cogs" style="font-size:36px"></i>
+            <button class="accordion">Security Testing</button>
+       	    <div class="panel">
+                <!-- <div id="loading">        
+                    <img id="loading-image" src="images/loading.gif" alt="Loading..." />  -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                            <div class="x_content">
+                                <div class="row">
+                                    <div  class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="GetZappconfig()">
+                                        <div class="tile-stats">
+                                            <div class="icon" ><i  class="fa fa-cogs" style="font-size:36px"></i>
+                                            </div>
+                                            <div class="count" >&nbsp;</div>
+                                            <!-- <button class="accordion">Configure</button> -->
+                                            <h3 align="center">Configure</h3>
+                                            <!-- <a onclick="myFunction()"><h3 align="center">Configure</h3></a> -->
                                         </div>
-                                        <div class="count" >&nbsp;</div>
-                                        <!-- <button class="accordion">Configure</button> -->
-
-                                        <h3 align="center">Configure</h3>
-                                        <!-- <a onclick="myFunction()"><h3 align="center">Configure</h3></a> -->
-
                                     </div>
-                                </div>
-                                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="StartZapScan()">
+                                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="StartZapScan()">
                                     <div class="tile-stats">
                                         <div class="icon"><i class="fa fa-caret-square-o-right" style="font-size:36px" align="center"></i>
                                         </div>
                                         <div class="count" >&nbsp;</div>
                                         <h3 align="center">Start security Scan</h3>
                                     </div>
-                                </div>
-                                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12"  onclick="GetReports()">
-                                    <div class="tile-stats">
-                                        <div class="icon"><i class="fa fa-file-excel-o" style="font-size:36px"></i>
+                                    </div>
+                                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12"  onclick="GetReports()">
+                                        <div class="tile-stats">
+                                            <div class="icon"><i class="fa fa-file-excel-o" style="font-size:36px"></i>
+                                            </div>
+                                            <div class="count">&nbsp;</div>
+                                            <h3 align="center">Reports</h3>
                                         </div>
-                                        <div class="count">&nbsp;</div>
-                                        <h3 align="center">Reports</h3>
-                                        
+                                    </div>
+                                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="tile-stats">
+                                            <div class="icon"><i class="fa fa-question-circle" style="font-size:36px"></i>
+                                            </div>
+                                            <div class="count" id="total-refunded-items">&nbsp;</div>
+                                            <h3 align="center">Help</h3>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                    <div class="tile-stats">
-                                        <div class="icon"><i class="fa fa-question-circle" style="font-size:36px"></i>
+                                <div id="myDIV" class="panel">
+                                    <div class="container">
+                                        <h1 align="center">Configure ZAP Proxy Details</h1>
+                                        <hr>
+                                        <div id="SavedMsg" class="panel" style="display:none">
+                                            <p class="SuccessMsg" id="SavedConfigMsg"  align="center"></p>
                                         </div>
-                                        <div class="count" id="total-refunded-items">&nbsp;</div>
-
-                                        <h3 align="center">Help</h3>
+                                        <label for="hostname"><b>ZAP Hostname</b></label>
+                                        <input type="text" placeholder="Enter Hostname"  id="hostname" name="hostname" required>
+                                        <label for="port"><b>ZAP Port Number</b></label>
+                                        <input type="text" placeholder="Enter Port Number" id="port" name="port" required>
+                                        <label for="ApiKey"><b>ZAP Api Key</b></label>
+                                        <input type="text" placeholder="Enter ApiKey" id="ApiKey" name="ApiKey" required>
+                                        <hr>
+                                     
+                                        <button style="width:50%"  onclick="SaveConfig()" class="registerbtn" type="submit"  >Save</button>
+                                        <button style="width:50%" type="submit" class="LaunchZapbtn"  onclick="LaunchZap()">Launch ZAP</button>
+                           
                                     </div>
                                 </div>
-                                
-                            </div>
-                            <div id="myDIV" class="panel">
-                                    <form >
-                                        <div class="container">
-                                            <h1 align="center">Configure ZAP Proxy Details</h1>
-                                            <hr>
-                                            <label for="hostname"><b>ZAP Hostname</b></label>
-                                            <input type="text" placeholder="Enter Hostname"  id="hostname" name="hostname" required>
-                                            <label for="port"><b>ZAP Port Number</b></label>
-                                            <input type="text" placeholder="Enter Port Number" id="port" name="port" required>
-                                            <label for="ApiKey"><b>ZAP Api Key</b></label>
-                                            <input type="text" placeholder="Enter ApiKey" id="ApiKey" name="ApiKey" required>
-                                            <hr>
-                                            <button style="width:50%"  onclick="SaveConfig()" type="submit"  >Save</button>
-                                            <button style="width:50%" type="submit" id="launch_zap">Launch ZAP</button>
-                                        </div>
-                                    </form>
-                                </div>
-
                                 <div id="StartScanDiv" class="panel">
-                                    <form >
                                         <div class="container">
                                             <h1 align="center">Start ZAP Proxy Scan</h1>
                                             <hr>
-                                            <label for="target Application"><b>Targeted Websites</b></label>
+                                            <div id="ScannedMsg" class="panel" style="display:none">
+                                                <p class="SuccessMsg1" id="ScannedMsgText" align="center"></p>
+                                            </div>
+                                            <label for="target Application"><b>Targeted Websites :</b></label>
                                             <input type="text" placeholder="Enter Targeted Website"  id="TargetedWebsites" name="TargetedWebsites" required>
                                             
-                                              <h3>ZAP Scan Modes :</h3>
+                                              <label for="ZAP Scan Modes"><b>ZAP Scan Modes :</b></label>
                                               <label class="container">Spider
-                                                  <input type="radio"  id="spiderradio" name="radio">
+                                                  <input checked="checked"  type="radio"  id="spiderradio" name="radio">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container">Active Scan<input type="radio" id="ascanradio" name="radio">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container">Ajax Spider<input type="radio" id="ajspiderradio" name="radio">
+                                              <label class="container">Ajax Spider<input type="radio" id="ajspiderradio" disabled="true" name="radio">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container">Selenium<input checked="checked" type="radio" id="selenradio" name="radio">
+                                              <label class="container">Selenium<input type="radio" id="selenradio" name="radio">
                                                 <span class="checkmark"></span>
                                               </label>
 
@@ -221,11 +222,8 @@
                                             <button style="width:50%"  onclick="StartScan()" type="submit"  >Start Scan</button>
                                             
                                         </div>
-                                    </form>
                                 </div>
-
                                 <div id="ReportDisplay" class="panel">
-                                    <form >
                                         <div class="container">
                                             <h1 align="center">ZAP Proxy Report</h1>
                                             <hr>
@@ -235,14 +233,15 @@
                                             <p id="zapReports"></p>
                                             <hr>
                                         </div>
-                                    </form>
                                 </div>
-
-
+                                <div id="loading" style="display:none">  
+                                        <img id="loading-image" src="images/ajax-loader.gif" alt="Loading..." /> 
+                                </div>
+                                
                         </div>
                     </div>
                 </div>
-          
+                
             </div>
         
             <div class="clearfix"></div>
@@ -536,6 +535,10 @@
             $('#notif-group div').first().css('display', 'block');
         });
     })
+
+//     $(window).load(function() {
+//      $('#loading').hide();
+//   });
     var acc = document.getElementsByClassName("accordion");
 var i;
 
@@ -562,27 +565,51 @@ window.onclick = function(event) {
 }
 function GetZappconfig() {
     var x = document.getElementById("myDIV");
+    var y = document.getElementById("StartScanDiv");
+    var z = document.getElementById("ReportDisplay");
     if (x.style.display === "block") {
         x.style.display = "none";
     } else {
         x.style.display = "block";
-        $.get("/api/zapconfig", function(data, status){
-            //alert("Data2: " + data + "\nStatus: " + status);
-            var jsobj =JSON.parse(data);
+        y.style.display = "none";
+        z.style.display = "none";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/api/zapconfig", true);
+        xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var jsobj =JSON.parse(xhttp.responseText);
                 //alert("zaphostname: " + jsobj.zaphostname + "\zapport: " + jsobj.zapport);
                 document.getElementById("hostname").value = jsobj.zaphostname;
                 document.getElementById("port").value = jsobj.zapport 
                 document.getElementById("ApiKey").value = jsobj.zapapikey 
-            });
+        }
+        else{
+           // alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
+        }
+        };
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+
     }
 }
 
 function StartZapScan() {
     var x = document.getElementById("StartScanDiv");
+    var y = document.getElementById("myDIV");
+    var z = document.getElementById("ReportDisplay");
+
     if (x.style.display === "block") {
         x.style.display = "none";
     } else {
         x.style.display = "block";
+        y.style.display = "none";
+        z.style.display = "none";
+
+    //     var ScanMsg= document.getElementById('ScannedMsg');
+    // ScanMsg.style.display='block';
+    // document.getElementById("ScannedMsgText").innerHTML = "Zap performed in the Web Appplication  Check the Security alerts in Reports Tab";
+
+
         $.get("/api/getzapoptions", function(data, status){
             //alert("Data2: " + data + "\nStatus: " + status);
             var jsobj =JSON.parse(data);
@@ -606,93 +633,126 @@ function DisplayReportsWindow() {
 
 function GetReports() {
 
-  
     var x = document.getElementById("ReportDisplay");
+    var y = document.getElementById("StartScanDiv");
+    var z = document.getElementById("myDIV");
+    var loadspin= document.getElementById('loading');
+    loadspin.style.display = 'block';
+
     if (x.style.display === "block") {
         x.style.display = "none";
 
     } else {
         x.style.display = "block";
+        y.style.display = "none";
+        z.style.display = "none";
 
-        //var TargetedWebsites = document.getElementById("ReportTargeted").value;
-
-     //alert("TargetedWebsites: " +TargetedWebsites+" zapoptions:"+zapoptions); 
-    //  $.ajax({
-    //         url : "/api/generateReports",
-    //         type: 'POST',
-    //         contentType: 'application/json',
-    //         dataType : "json",
-    //         data:JSON.stringify({"application": TargetedWebsites}),
-    //         success:function(data) { 
-    //             alert("Get Reports: " +JSON.stringify(data)); 
-    //             var jsobj =JSON.parse(data);
-    //             var myObj=jsobj.site.alerts;
-    //             for (x in myObj) {
-    //                 alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
-    //             }
-            
-    //         },
-    //         error: function() {
-    //             alert("Error Ajx: " +data); 
-    //         }
-    //     });
-    // }
-        $.get("/api/generateReports", function(data, status){
-            //alert("Data2: " + data + "\nStatus: " + status);
-   
-
-               // alert("Get Reports: " +JSON.stringify(data)); 
-                var jsobj =JSON.parse(data);
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/api/generateReports", true);
+        xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var jsobj =JSON.parse(xhttp.responseText);
                 var myObj=jsobj.site.alerts;
                 var txt="";
                 txt += "<table border='1'>"
-                    txt += "<tr><th>AlertID</th><th>AlertName</th><th>Risk Level</th><th>Alert Description</th><th>Solution</th></tr>";
+                    txt += "<tr><th align=\"center\">AlertID</th><th align=\"center\">AlertName</th><th align=\"center\">Risk Level</th><th align=align=\"center\">Alert Description</th><th align=align=\"center\">Solution</th></tr>";
                     
                 for (x in myObj) {
                   //  alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
                     txt += "<tr><td>" + myObj[x].pluginid + "</td><td>" + myObj[x].name + "</td><td>" + myObj[x].riskdesc + "</td><td>" + myObj[x].desc + "</td><td>" + myObj[x].solution + "</td></tr>";
                 }
                 txt += "</table>"  
+                loadspin.style.display = 'none';
                 document.getElementById("zapReports").innerHTML = txt;
-            
-                //alert("zaphostname: " + jsobj.zaphostname + "\zapport: " + jsobj.zapport);
-                // document.getElementById("hostname").value = jsobj.zaphostname;
-                // document.getElementById("port").value = jsobj.zapport 
-                // document.getElementById("ApiKey").value = jsobj.zapapikey 
-            });
+                
+            }
+            else{
+            // alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
+            }
+            };
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
         }
-    
-}
+    }
+
+
 
 
 function SaveConfig(){
+
+    var x = document.getElementById("myDIV");
+    x.style.display = 'none'
+    var loadspin= document.getElementById('loading');
+    loadspin.style.display = 'block';
+    var SavedMsg= document.getElementById('SavedMsg');
     
     var hostname = document.getElementById("hostname").value;
     var port = document.getElementById("port").value;
     var ApiKey = document.getElementById("ApiKey").value;
-    $.ajax({
-            url : "/api/zapconfig",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType : "json",
-            data:JSON.stringify({"zaphostname": hostname,"zapport": port,"zapapikey":ApiKey}),
-            success:function(data) { 
-               // alert("DataAjx: " +data); 
-            },
-            error: function() {
-               // alert("ErrorAjx: " +data); 
-            }
-        });
+    var Inputdata= JSON.stringify({"zaphostname": hostname,"zapport": port,"zapapikey":ApiKey});
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/api/zapconfig", true);
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+       // alert("Resp Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
+       loadspin.style.display = 'none';
+       x.style.display = 'block'
+       SavedMsg.style.display='block';
+       document.getElementById("SavedConfigMsg").innerHTML = "Zap Proxy details Saved sucessfully";
+    
     }
+    else{
+        //alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
+    }
+  };
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(Inputdata);
+   // var response = JSON.parse(xhttp.responseText);
+
+}
+
+
+
+function LaunchZap(){
+    
+    var x = document.getElementById("myDIV");
+    var loadspin= document.getElementById('loading');
+    var SavedMsg= document.getElementById('SavedMsg');
+    x.style.display = 'none'
+    loadspin.style.display = 'block';
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/api/launchzap", true);
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            loadspin.style.display = 'none';
+            x.style.display = 'block'
+            SavedMsg.style.display='block';
+            document.getElementById("SavedConfigMsg").innerHTML = "Zap Proxy Server Running Now";
+        }
+        else{
+            //document.getElementById('loading').style.display = 'block';
+        }
+    };
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+}
 
 function StartScan(){
     
+    var y = document.getElementById("StartScanDiv");
+    y.style.display = 'none'
+    var ScanMsg= document.getElementById('ScannedMsg');
+    // ScanMsg.style.display='block';
+    // document.getElementById("ScannedMsgText").innerHTML = "Zap performed in the Web Appplication  Check the Security alerts in Reports Tab";
+
+    var loadspin= document.getElementById('loading');
+    loadspin.style.display = 'block';
     var TargetedWebsites = document.getElementById("TargetedWebsites").value;
     var zapoptions='spider'
-
     if (document.getElementById('spiderradio').checked) {
         zapoptions= 'spider';
-        
     }
     else if (document.getElementById('ascanradio').checked) {
         zapoptions= 'ascan';
@@ -704,21 +764,24 @@ function StartScan(){
         zapoptions= 'selenium'
     }
 
-    //alert("TargetedWebsites: " +TargetedWebsites+" zapoptions:"+zapoptions); 
-    $.ajax({
-            url : "/api/executezapproxy",
-            type: 'POST',
-            contentType: 'application/json',
-            dataType : "json",
-            data:JSON.stringify({"application": TargetedWebsites,"zapoption": zapoptions}),
-            success:function(data) { 
-                alert("Executezapproxy DataAjx: " +JSON.stringify(data)); 
-            },
-            error: function() {
-                alert("ErrorAjx: " +data); 
-            }
-        });
-    }
+    var Inputdata= JSON.stringify({"application": TargetedWebsites,"zapoption": zapoptions});    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            loadspin.style.display = 'none';
+            y.style.display = 'block'
+            document.getElementById("ScannedMsgText").innerHTML = "Zap performed "+zapoption+"in the Web Appplication : "+TargetedWebsites+" Check the Security alerts in Reports Tab";
+            ScanMsg.style.display='block';
+            
+        }
+        else{
+           // document.getElementById('loading').style.display = 'block';
+        }
+    };
+    xhttp.open("POST", "/api/executezapproxy", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(Inputdata);
+}
 </script>
 
 <!--web socket communication-->

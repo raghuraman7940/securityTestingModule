@@ -102,12 +102,12 @@ public class ZapTools {
 				 response.append(inputLine);
 			 }
 			 in.close();
-			 System.out.println(response.toString());
-			 System.out.println("Response received from the API endpoint. ZAP should be up by now");
+			// System.out.println(response.toString());
+			 System.out.println("ZAP Proxy Server running now");
 			 result=true;
 			 break;
 		 } catch (ConnectException e) {
-			 System.out.println("No response received from the API endpoint. Seems like ZAP has not started yet, let's keep polling");
+			 System.out.println("ZAP has not started yet, let's keep polling....");
 			 if (MaxRetries>0)
 			 {
 				 if(numberOfRetries >= MaxRetries){
@@ -117,7 +117,7 @@ public class ZapTools {
 			 continue;
 		 } finally {
 			 ++numberOfRetries;
-			 Thread.sleep(5000);
+			 Thread.sleep(1000);
 	 	}
 	 }
 	 	return result;
