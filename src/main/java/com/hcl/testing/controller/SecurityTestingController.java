@@ -77,7 +77,7 @@ public class SecurityTestingController {
 	@RequestMapping(value = "/zapconfig", method = RequestMethod.GET)
 	public ResponseEntity<String> getzapconfig()   {
 		String message = null;
-		System.out.println("GET api/getzapoptions  ");
+		System.out.println("GET api/zapconfig  ");
 		try {
 			 // zapapi initialize
 			//	System.out.println("zaphostname: "+properties.getzaphostname());

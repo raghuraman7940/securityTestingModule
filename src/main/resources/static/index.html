@@ -199,6 +199,7 @@
                                             <hr>
                                             <div id="ScannedMsg" class="panel" style="display:none">
                                                 <p class="SuccessMsg1" id="ScannedMsgText" align="center"></p>
+                                                <p class="ErrorMsg" id="ErrorMsgText" align="center"></p>
                                             </div>
                                             <label for="target Application"><b>Targeted Websites :</b></label>
                                             <input type="text" placeholder="Enter Targeted Website"  id="TargetedWebsites" name="TargetedWebsites" required>
@@ -225,7 +226,7 @@
                                 </div>
                                 <div id="ReportDisplay" class="panel">
                                         <div class="container">
-                                            <h1 align="center">ZAP Proxy Report</h1>
+                                            <h1 align="center">ZAP Scanning Report</h1>
                                             <hr>
                                             <!-- <label for="target Application"><b>Targeted Websites</b></label>
                                             <input type="text" placeholder="Enter Targeted Website"  id="ReportTargeted" name="ReportTargeted" required>
@@ -597,27 +598,50 @@ function StartZapScan() {
     var x = document.getElementById("StartScanDiv");
     var y = document.getElementById("myDIV");
     var z = document.getElementById("ReportDisplay");
+    var ScanMsg= document.getElementById('ScannedMsg');
+    var loadspin= document.getElementById('loading');
 
     if (x.style.display === "block") {
         x.style.display = "none";
     } else {
-        x.style.display = "block";
+        x.style.display = "none"
         y.style.display = "none";
         z.style.display = "none";
+        ScanMsg.style.display= "none";
+        loadspin.style.display = 'block';
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/api/getzapoptions", true);
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var jsobj =JSON.parse(xhttp.responseText);
+                loadspin.style.display = 'none';
+                x.style.display = "block";
+                document.getElementById("ScannedMsgText").innerHTML = "Zap Proxy Server Running Now";
+                document.getElementById("ScannedMsgText").style.display='block'
+                document.getElementById("ErrorMsgText").style.display='none'
+                ScanMsg.style.display='block';
+            }
+            else if (xhttp.readyState == 4 && xhttp.status == 500) {
+                loadspin.style.display = 'none';
+                x.style.display = "block";
+                document.getElementById("ScannedMsgText").style.display='none'
+                document.getElementById("ErrorMsgText").innerHTML = "Zap Proxy Server not started. Please configure Zap Proxy details and launch the ZAP in Configure Tab";
+                document.getElementById("ErrorMsgText").style.display='block'
+                ScanMsg.style.display='block';
+            }
+            else{
+                // loadspin.style.display = 'none';
+                // x.style.display = "block";
+                // document.getElementById("ScannedMsgText").style.display='none'
+                // document.getElementById("ErrorMsgText").style.display='block'
+                // document.getElementById("ErrorMsgText").innerHTML = "Zap Proxy Server not Started and Launch the ZAP in Configure Tab";
+                // ScanMsg.style.display='block';
+                // alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
+            }
+        };
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
 
-    //     var ScanMsg= document.getElementById('ScannedMsg');
-    // ScanMsg.style.display='block';
-    // document.getElementById("ScannedMsgText").innerHTML = "Zap performed in the Web Appplication  Check the Security alerts in Reports Tab";
-
-
-        $.get("/api/getzapoptions", function(data, status){
-            //alert("Data2: " + data + "\nStatus: " + status);
-            var jsobj =JSON.parse(data);
-                //alert("zaphostname: " + jsobj.zaphostname + "\zapport: " + jsobj.zapport);
-                // document.getElementById("hostname").value = jsobj.zaphostname;
-                // document.getElementById("port").value = jsobj.zapport 
-                // document.getElementById("ApiKey").value = jsobj.zapapikey 
-            });
     }
 }
 
@@ -630,15 +654,12 @@ function DisplayReportsWindow() {
     }
 }
 
-
 function GetReports() {
 
     var x = document.getElementById("ReportDisplay");
     var y = document.getElementById("StartScanDiv");
     var z = document.getElementById("myDIV");
     var loadspin= document.getElementById('loading');
-    loadspin.style.display = 'block';
-
     if (x.style.display === "block") {
         x.style.display = "none";
 
@@ -646,37 +667,49 @@ function GetReports() {
         x.style.display = "block";
         y.style.display = "none";
         z.style.display = "none";
+        loadspin.style.display = 'block';
 
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "/api/generateReports", true);
         xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //alert("Resp Text : " +xhttp.responseText);
+            if (xhttp.responseText)
+            {
                 var jsobj =JSON.parse(xhttp.responseText);
+                var mySite=jsobj.site;
                 var myObj=jsobj.site.alerts;
                 var txt="";
-                txt += "<table border='1'>"
-                    txt += "<tr><th align=\"center\">AlertID</th><th align=\"center\">AlertName</th><th align=\"center\">Risk Level</th><th align=align=\"center\">Alert Description</th><th align=align=\"center\">Solution</th></tr>";
-                    
+                txt += "<table  border=1 cellspacing=1 cellpadding=1 ><tr><h4> <FONT COLOR=660000 FACE=Arial SIZE=4.5> <u>Test Details :</u></h4><td width=150 align=left bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE=Arial SIZE=2.75><b>Execution Date</b></td><td width=150 align=left><FONT COLOR=#153E7E FACE=Arial SIZE=2.75><b>"+jsobj['@generated'];
+                txt += "</b></td></tr><tr><td width=150 align=left bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE=Arial SIZE=2.75><b>Target Application</b></td><td width=150 align=left><FONT COLOR=#153E7E FACE=Arial SIZE=2.75><b>"+mySite['@name'];
+                txt += "</b></td></tr><tr><td width=150 align= left  bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE= Arial  SIZE=2.75><b>Release Version</b></td><td width=150 align= left ><FONT COLOR=#153E7E FACE= Arial  SIZE=2.75><b>"+jsobj['@version'];
+                txt += "</b></td></tr></table>";
+                txt += "<table width=100% border=1 cellspacing=1 cellpadding=1><tr><h4> <FONT COLOR=660000 FACE=Arial SIZE=4.5> <u>Alert Details :</u></h4>"
+                txt += "<tr><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertID</td><td align= center width=15% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertName</td><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Risk Level</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Alert Description</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Solution</td></tr>";
                 for (x in myObj) {
                   //  alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
-                    txt += "<tr><td>" + myObj[x].pluginid + "</td><td>" + myObj[x].name + "</td><td>" + myObj[x].riskdesc + "</td><td>" + myObj[x].desc + "</td><td>" + myObj[x].solution + "</td></tr>";
+                    txt += "<tr><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].pluginid + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].name + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].riskdesc + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].desc + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].solution + "</td></tr>";
                 }
                 txt += "</table>"  
                 loadspin.style.display = 'none';
                 document.getElementById("zapReports").innerHTML = txt;
+            }
+            else
+            {
+                loadspin.style.display = 'none';
+                document.getElementById("zapReports").innerHTML = "No Reports generated!!!. Please execute zap modes in Security Scan Tab";
+
+            }
                 
             }
             else{
-            // alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
+             //alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
             }
             };
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
         }
     }
-
-
-
 
 function SaveConfig(){
 
@@ -712,8 +745,6 @@ function SaveConfig(){
 
 }
 
-
-
 function LaunchZap(){
     
     var x = document.getElementById("myDIV");
@@ -744,11 +775,9 @@ function StartScan(){
     var y = document.getElementById("StartScanDiv");
     y.style.display = 'none'
     var ScanMsg= document.getElementById('ScannedMsg');
-    // ScanMsg.style.display='block';
-    // document.getElementById("ScannedMsgText").innerHTML = "Zap performed in the Web Appplication  Check the Security alerts in Reports Tab";
-
     var loadspin= document.getElementById('loading');
     loadspin.style.display = 'block';
+
     var TargetedWebsites = document.getElementById("TargetedWebsites").value;
     var zapoptions='spider'
     if (document.getElementById('spiderradio').checked) {
@@ -770,7 +799,9 @@ function StartScan(){
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             loadspin.style.display = 'none';
             y.style.display = 'block'
-            document.getElementById("ScannedMsgText").innerHTML = "Zap performed "+zapoption+"in the Web Appplication : "+TargetedWebsites+" Check the Security alerts in Reports Tab";
+            document.getElementById("ScannedMsgText").innerHTML = "Zap performed "+zapoptions+" in the Web Appplication :"+TargetedWebsites+" successfully.  Please check the Security alerts in Reports Tab";
+            document.getElementById("ScannedMsgText").style.display='block'
+            document.getElementById("ErrorMsgText").style.display='none'
             ScanMsg.style.display='block';
             
         }
