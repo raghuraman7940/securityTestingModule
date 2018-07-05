@@ -7,19 +7,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import com.hcl.testing.config.ZapProperties;
 
 public class SeleniumTestClass {
 	WebDriver driver;
 	String site = "http://localhost:8888/bodgeit/";
+	ZapProperties properties;
 	
-	public SeleniumTestClass(String applnsite)
+	public SeleniumTestClass(String applnsite,ZapProperties properties)
 	{
 		site=applnsite;
+		this.properties=properties;
 	}
 	public void setUp() throws Exception {
 		
 		Proxy proxy = new Proxy(); // org.openqa.selenium.Proxy
-		proxy.setHttpProxy("localhost:8080");
+		String zaproxyconfig=properties.getzaphostname()+":"+properties.getzapport();//"localhost:8080";
+		proxy.setHttpProxy(zaproxyconfig);
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		capabilities.setCapability("proxy", proxy);
     	System.setProperty("webdriver.chrome.driver", "./Drivers/chromedriver/chromedriver.exe");

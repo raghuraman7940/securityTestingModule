@@ -568,12 +568,15 @@ function GetZappconfig() {
     var x = document.getElementById("myDIV");
     var y = document.getElementById("StartScanDiv");
     var z = document.getElementById("ReportDisplay");
+    var ScanMsg= document.getElementById('ScannedMsg');
     if (x.style.display === "block") {
         x.style.display = "none";
+        ScanMsg.style.display= "none";
     } else {
         x.style.display = "block";
         y.style.display = "none";
         z.style.display = "none";
+        ScanMsg.style.display= "none";
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "/api/zapconfig", true);
         xhttp.onreadystatechange = function() {
@@ -688,7 +691,21 @@ function GetReports() {
                 txt += "<tr><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertID</td><td align= center width=15% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertName</td><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Risk Level</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Alert Description</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Solution</td></tr>";
                 for (x in myObj) {
                   //  alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
-                    txt += "<tr><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].pluginid + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].name + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].riskdesc + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].desc + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].solution + "</td></tr>";
+                    txt += "<tr><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].pluginid + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].name + "</td>"
+                    var sFeStatus=myObj[x].riskdesc
+                    if(sFeStatus.indexOf("High ")>=0){
+                        txt +="<td align=center bgcolor=red><FONT COLOR=#000000 FACE= Arial  SIZE=2>" +sFeStatus + "</td>"
+                    }
+                    else if(sFeStatus.indexOf("Low ")>=0){
+                        txt +="<td align=center bgcolor=yellow><FONT COLOR=#000000 FACE= Arial  SIZE=2>" +sFeStatus + "</td>"
+                    }
+                    else if(sFeStatus.indexOf("Medium ")>=0){
+                        txt +="<td align=center bgcolor=ORANGE><FONT COLOR=#000000 FACE= Arial  SIZE=2>" +sFeStatus + "</td>"
+                    }
+                    else{
+                        txt +="<td align=center bgcolor=yellow><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + sFeStatus + "</td>"
+                    }
+                    txt +="<td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].desc + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].solution + "</td></tr>";
                 }
                 txt += "</table>"  
                 loadspin.style.display = 'none';

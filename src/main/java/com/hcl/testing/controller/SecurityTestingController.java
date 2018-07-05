@@ -315,7 +315,7 @@ public class SecurityTestingController {
 			String zapjql = "Testapplication = " + appln + " AND zapotion = " + zapotion ;
 		
 			System.out.println("Execute Query:"+zapjql.toString());
-			message=securityService.ExecuteZap(zapapi, appln, zapotion);
+			message=securityService.ExecuteZap(zapapi, appln, zapotion,properties);
 			//message = "{\"message\" : \"Zap execution success\" }";
 //			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 //			message=gson.toJson(message);

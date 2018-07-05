@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.zaproxy.clientapi.core.ClientApi;
 
 import com.hcl.testing.selenium.SeleniumTestClass;
+import com.hcl.testing.config.ZapProperties;
 //import com.zap.client.ZapTools;
 
 @Service
@@ -40,8 +41,8 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 	public void executeseleniumModule() {
 		// TODO Auto-generated method stub
 		try {
-			SeleniumTestClass sc = new SeleniumTestClass("");
-			sc.setUp();
+		//	SeleniumTestClass sc = new SeleniumTestClass("");
+			//sc.setUp();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +50,7 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 	}
 	
 	@Override
-	public String ExecuteZap(ClientApi zapapi,String ZAP_URI_PORT,String zapoption) {
+	public String ExecuteZap(ClientApi zapapi,String ZAP_URI_PORT,String zapoption,ZapProperties properties) {
 		String message=null;
 		try {
 			switch(zapoption) 
@@ -68,7 +69,7 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 				     break;
 				case "selenium":
 					try {
-						SeleniumTestClass sc = new SeleniumTestClass(ZAP_URI_PORT);
+						SeleniumTestClass sc = new SeleniumTestClass(ZAP_URI_PORT,properties);
 						sc.setUp();
 						message=zap.checkErrors(zapapi,ZAP_URI_PORT);
 					} catch (Exception e) {
