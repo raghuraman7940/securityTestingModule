@@ -1,5 +1,6 @@
 package com.hcl.testing.selenium;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
@@ -59,6 +60,90 @@ public class SeleniumTestClass {
 			System.out.println("CheckCurrentURL from " + linkText + ": FAIL");
 	}
 	
+	public void GetProductTypes(String Objectname, String page) {
+		try{
+			
+			checkMenu("Home", "home.jsp");
+			sleep();
+			
+
+		List<WebElement> ProdTypes = driver.findElements(By.xpath(Objectname));
+		
+		for (WebElement ProdType : ProdTypes)
+		{
+			
+			String ProdTypeName= ProdType.getText();
+			sleep();
+			System.out.println("ProdTypeName " + ProdTypeName);
+			ProdType.click();
+			sleep();
+			int prodCnt=0;
+			
+			List<WebElement> Prods = driver.findElements(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr"));
+			System.out.println("Prod Prods.size " + Prods.size());
+//			for (int i=0;i<Prods.size();i++){
+//				//WebElement Prod=Prods.get(i);
+//				System.out.println("Prod i " +i);
+//				prodCnt=i+1;
+//				if (i==0){
+//					String Col1=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr["+prodCnt+"]/th[1]")).getText();
+//					String Col2=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr["+prodCnt+"]/th[2]")).getText();
+//					String Col3=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr["+prodCnt+"]/th[3]")).getText();
+//					System.out.println("Prod ColName " + Col1+Col2+Col3);
+//				}
+//				else
+//				{
+//					String dat1=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr["+prodCnt+"]/td[1]")).getText();
+//					String dat2=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr["+prodCnt+"]/td[2]")).getText();
+//					String dat3=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]/center/table/tbody/tr["+prodCnt+"]/td[3]")).getText();
+//					System.out.println("Prod values " + dat1+dat2+dat3);
+//				}
+//				
+//			}
+//			
+		}
+//		checkMenu("Home", "home.jsp");
+//		sleep();
+//		
+		}catch(Exception e){
+			System.out.println("Product types => " + Objectname+" : FAIL :"+e.getMessage());
+		}
+	}
+	
+	
+	public void Login(String UserName, String Password) {
+		sleep();
+		try{
+			
+			checkMenu("Login", "login.jsp");
+			
+			driver.findElement(By.id("username")).sendKeys(UserName);
+			driver.findElement(By.id("password")).sendKeys(Password);
+			sleep();
+			driver.findElement(By.id("submit")).click();
+			sleep();
+			String LoginMsg=driver.findElement(By.xpath("//table/tbody/tr[3]/td/table/tbody/tr/td[2]")).getText();
+			//System.out.println("LoginMsg => " +LoginMsg);
+			
+			if ((LoginMsg).contains("You have logged in successfully"))
+			{
+				System.out.println("Login with User Details => " + UserName+" : "+Password + ": PASS");
+				
+				String User=driver.findElement(By.xpath("//table/tbody/tr[1]/td/table/tbody/tr/td[3]")).getText();
+				if ((User).contains(UserName))
+					System.out.println("Loggedin username => " + UserName+" is displayed :  PASS");
+				else
+					System.out.println("Loggedin username => " + UserName+" is not displayed :  FAIL");
+				
+			}
+			else if ((LoginMsg).contains("You supplied an invalid name or password"))
+				System.out.println("Login with User Details =>  " + UserName+" : "+Password + ": FAIL");
+			
+		}catch(Exception e){
+			System.out.println("Login with User Details => " + UserName+" : "+Password + ": FAIL");
+		}
+	}
+	
 	public void checkMenuLinks(String page) {
 		driver.get(site + page);
 		checkMenu("Home", "home.jsp");
@@ -68,11 +153,16 @@ public class SeleniumTestClass {
 		
 		driver.get(site + page);
 		checkMenu("Contact Us", "contact.jsp");	
+		
+		driver.get(site + page);
+		checkMenu("Login", "login.jsp");
+		
+		driver.get(site + page);
+		checkMenu("Your Basket", "basket.jsp");	
+		
+		driver.get(site + page);
+		checkMenu("Search", "search.jsp");	
 	}
-	
-
-	
-
 
 	public void tstSearch() {
 		driver.get(site + "search.jsp?q=doo");
@@ -105,6 +195,11 @@ public class SeleniumTestClass {
 	
 	public void testAll() {
 		tstMenuLinks();
+		Login("raghuraman-k@hcl.com","WrongPwd");
+		Login("WrongUsr","Welcome1");
+		Login("<Script>Hi</Script>","Welcome1");
+		Login("raghuraman-k@hcl.com","Welcome1");
+		//GetProductTypes("//table/tbody/tr[3]/td/table/tbody/tr/td[1]/a","");
 	}
 
 }

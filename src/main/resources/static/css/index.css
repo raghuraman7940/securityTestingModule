@@ -29,49 +29,69 @@
     overflow: hidden;
 }
 
-* {box-sizing: border-box}
-/* Full-width input fields */
-  input[type=text], input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
+
+#exTab2 .tab-content {
+  padding : 5px 15px;
+  background-color: #f2f2f2;
 }
 
-/* Add a background color when the inputs get focus */
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
+#exTab2 h3 {
+  color : white;
+  background-color: #f2f2f2;
+  padding : 5px 15px;
 }
 
-Set a style for the submit/register button
-.registerbtn,.LaunchZapbtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-  float: left; /* Float the buttons side by side */
+
+/* change border radius for the tab , apply corners on top*/
+
+#exTab2 .nav.nav-tabs>li {
+  background-color: white;
 }
 
-.registerbtn:hover {
-  opacity:1;
+#exTab2 .nav.nav-tabs> li.active>a {
+  background-color: #f2f2f2; 
 }
+
+
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.containerform {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+
 
 /* Set a style for all buttons */
 button {
   background-color: #4CAF50;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  padding: 12px 20px;
   border: none;
   cursor: pointer;
-  width: 100%;
   opacity: 0.9;
 }
 

@@ -174,28 +174,81 @@
                                     </div>
                                 </div>
                                 <div id="myDIV" class="panel">
+                                        <h1 align="center">Configure Test Variables</h1>
+                                        <hr></hr>                                        
+                                        <div class="container"><h2>Select the menu for the scanning mode</h2></div>
+                                        <div id="exTab2" class="container">	
+                                            <ul class="nav nav-tabs">
+                                                <li class="active">
+                                                    <a  href="#1" data-toggle="tab" >Dynamic Scan</a>
+                                                </li>
+                                                <li><a href="#2" data-toggle="tab">Static Scan</a>
+                                                </li>
+                                                    
+                                            </ul>
+                                            <div class="tab-content ">
+                                                 <div class="tab-pane active" id="1">
+                                                      <div class="containerform">
+                                                            <div id="SavedMsg" class="panel" style="display:none">
+                                                                    <p class="SuccessMsg" id="SavedConfigMsg"  align="center"></p>
+                                                            </div>
+                                                            <h4 align="center">Dynamic configuration details</h4>
+                                                            <form>
+                                                                <label for="hostname"><b>HostName</b></label>
+                                                                <input type="text" placeholder="Enter Hostname"  id="hostname" name="hostname" required>
+                                                                <label for="port"><b>Port Number</b></label>
+                                                                <input type="text" placeholder="Enter Port Number" id="port" name="port" required>
+                                                                <label for="ApiKey"><b>Api Key</b></label>
+                                                                <input type="text" placeholder="Enter ApiKey" id="ApiKey" name="ApiKey" required>
+                                                                <hr>
+                                                            </form>
+                                                            <button onclick="SaveConfig()" class="registerbtn" type="submit"  >Save</button>
+                                                            <button type="submit" class="LaunchZapbtn"  onclick="LaunchZap()">Start Application</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane" id="2">
+                                                          <div class="containerform">
+                                                                <div id="SavedMsg" class="panel" style="display:none">
+                                                                        <p class="SuccessMsg" id="SavedConfigMsg"  align="center"></p>
+                                                                </div>
+                                                            <h4 align="center">Static configuration details</h4>
+                                                            <form>
+                                                                    <label for="hostname"><b>HostName</b></label>
+                                                                    <input type="text" placeholder="Enter Hostname"  id="hostname" name="hostname" required>
+                                                                    <label for="port"><b>Port Number</b></label>
+                                                                    <input type="text" placeholder="Enter Port Number" id="port" name="port" required>
+
+                                                            </form>
+                                                            <button onclick="SaveConfig()" class="registerbtn" type="submit"  >Save</button>
+                                                            <button type="submit" class="LaunchZapbtn" >Launch </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                          </div>
+
+<!-- 
                                     <div class="container">
-                                        <h1 align="center">Configure ZAP Proxy Details</h1>
+                                        <h1 align="center">Configure Test Variables</h1>
                                         <hr>
                                         <div id="SavedMsg" class="panel" style="display:none">
                                             <p class="SuccessMsg" id="SavedConfigMsg"  align="center"></p>
                                         </div>
-                                        <label for="hostname"><b>ZAP Hostname</b></label>
+                                        <label for="hostname"><b>HostName</b></label>
                                         <input type="text" placeholder="Enter Hostname"  id="hostname" name="hostname" required>
-                                        <label for="port"><b>ZAP Port Number</b></label>
+                                        <label for="port"><b>Port Number</b></label>
                                         <input type="text" placeholder="Enter Port Number" id="port" name="port" required>
-                                        <label for="ApiKey"><b>ZAP Api Key</b></label>
+                                        <label for="ApiKey"><b>Api Key</b></label>
                                         <input type="text" placeholder="Enter ApiKey" id="ApiKey" name="ApiKey" required>
                                         <hr>
                                      
-                                        <button style="width:50%"  onclick="SaveConfig()" class="registerbtn" type="submit"  >Save</button>
-                                        <button style="width:50%" type="submit" class="LaunchZapbtn"  onclick="LaunchZap()">Launch ZAP</button>
+                                        <button onclick="SaveConfig()" class="registerbtn" type="submit"  >Save</button>
+                                        <button type="submit" class="LaunchZapbtn"  onclick="LaunchZap()">Launch ZAP</button>
                            
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div id="StartScanDiv" class="panel">
                                         <div class="container">
-                                            <h1 align="center">Start ZAP Proxy Scan</h1>
+                                            <h1 align="center">Start Security Scan</h1>
                                             <hr>
                                             <div id="ScannedMsg" class="panel" style="display:none">
                                                 <p class="SuccessMsg1" id="ScannedMsgText" align="center"></p>
@@ -204,7 +257,7 @@
                                             <label for="target Application"><b>Targeted Websites :</b></label>
                                             <input type="text" placeholder="Enter Targeted Website"  id="TargetedWebsites" name="TargetedWebsites" required>
                                             
-                                              <label for="ZAP Scan Modes"><b>ZAP Scan Modes :</b></label>
+                                              <!-- <label for="Scan Modes"><b>Scanning Modes :</b></label>
                                               <label class="container">Spider
                                                   <input checked="checked"  type="radio"  id="spiderradio" name="radio">
                                                 <span class="checkmark"></span>
@@ -217,16 +270,24 @@
                                               </label>
                                               <label class="container">Selenium<input type="radio" id="selenradio" name="radio">
                                                 <span class="checkmark"></span>
-                                              </label>
+                                              </label> -->
+
+                                              <label for="Scan Modes">Security Scan Options :</label>
+                                              <select id="SelectScan" name="SelectScan">
+                                                <option value="selenium" selected="selected">Selenium</option>
+                                                <option value="spider">Spider</option>
+                                                <option value="ascan">Active Scan</option>
+                                                <option value="ajaxspider">Ajax Spider</option>
+                                              </select>
 
                                             <hr>
-                                            <button style="width:50%"  onclick="StartScan()" type="submit"  >Start Scan</button>
+                                            <button  onclick="StartScan()" type="submit">Start Scan</button>
                                             
                                         </div>
                                 </div>
                                 <div id="ReportDisplay" class="panel">
                                         <div class="container">
-                                            <h1 align="center">ZAP Scanning Report</h1>
+                                            <h1 align="center">Security vulnerabilities Report</h1>
                                             <hr>
                                             <!-- <label for="target Application"><b>Targeted Websites</b></label>
                                             <input type="text" placeholder="Enter Targeted Website"  id="ReportTargeted" name="ReportTargeted" required>
@@ -687,7 +748,7 @@ function GetReports() {
                 txt += "</b></td></tr><tr><td width=150 align=left bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE=Arial SIZE=2.75><b>Target Application</b></td><td width=150 align=left><FONT COLOR=#153E7E FACE=Arial SIZE=2.75><b>"+mySite['@name'];
                 txt += "</b></td></tr><tr><td width=150 align= left  bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE= Arial  SIZE=2.75><b>Release Version</b></td><td width=150 align= left ><FONT COLOR=#153E7E FACE= Arial  SIZE=2.75><b>"+jsobj['@version'];
                 txt += "</b></td></tr></table>";
-                txt += "<table width=100% border=1 cellspacing=1 cellpadding=1><tr><h4> <FONT COLOR=660000 FACE=Arial SIZE=4.5> <u>Alert Details :</u></h4>"
+                txt += "<table width=100% border=1 cellspacing=1 cellpadding=1><tr><h4> <FONT COLOR=660000 FACE=Arial SIZE=4.5> <u>Security Alert Details :</u></h4>"
                 txt += "<tr><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertID</td><td align= center width=15% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertName</td><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Risk Level</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Alert Description</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Solution</td></tr>";
                 for (x in myObj) {
                   //  alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
@@ -796,19 +857,24 @@ function StartScan(){
     loadspin.style.display = 'block';
 
     var TargetedWebsites = document.getElementById("TargetedWebsites").value;
-    var zapoptions='spider'
-    if (document.getElementById('spiderradio').checked) {
-        zapoptions= 'spider';
-    }
-    else if (document.getElementById('ascanradio').checked) {
-        zapoptions= 'ascan';
-    }
-    else if (document.getElementById('ajspiderradio').checked) {
-        zapoptions= 'ajaxspider';
-    }
-    else if (document.getElementById('selenradio').checked) {
-        zapoptions= 'selenium'
-    }
+    var zapoptions='selenium'
+
+    var SelectScanElm= document.getElementById('SelectScan');
+    zapoptions = SelectScanElm.options[SelectScanElm.selectedIndex].value;
+    //  alert("zapoptions1 : " +strUser); 
+
+    // if (document.getElementById('spiderradio').checked) {
+    //     zapoptions= 'spider';
+    // }
+    // else if (document.getElementById('ascanradio').checked) {
+    //     zapoptions= 'ascan';
+    // }
+    // else if (document.getElementById('ajspiderradio').checked) {
+    //     zapoptions= 'ajaxspider';
+    // }
+    // else if (document.getElementById('selenradio').checked) {
+    //     zapoptions= 'selenium'
+    // }
 
     var Inputdata= JSON.stringify({"application": TargetedWebsites,"zapoption": zapoptions});    
     var xhttp = new XMLHttpRequest();
