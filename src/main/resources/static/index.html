@@ -193,17 +193,29 @@
                                                                     <p class="SuccessMsg" id="SavedConfigMsg"  align="center"></p>
                                                             </div>
                                                             <h4 align="center">Dynamic configuration details</h4>
+                                                           
+                                                            <label class="ServerStatusLabel" for="ServerStatuslbl"><b>Toggle Server Status</b> </label>  
+                                                            <hr>
+                                                            <label class="switch">
+                                                                    <input type="checkbox" name="onoffswitch" onclick="LaunchZap()" id="myonoffswitch">
+                                                                    <span class="slider round"></span>
+                                                            </label>
+                                         
                                                             <form>
+                                                                    <hr>
                                                                 <label for="hostname"><b>HostName</b></label>
                                                                 <input type="text" placeholder="Enter Hostname"  id="hostname" name="hostname" required>
                                                                 <label for="port"><b>Port Number</b></label>
                                                                 <input type="text" placeholder="Enter Port Number" id="port" name="port" required>
                                                                 <label for="ApiKey"><b>Api Key</b></label>
                                                                 <input type="text" placeholder="Enter ApiKey" id="ApiKey" name="ApiKey" required>
+
                                                                 <hr>
                                                             </form>
                                                             <button onclick="SaveConfig()" class="registerbtn" type="submit"  >Save</button>
-                                                            <button type="submit" class="LaunchZapbtn"  onclick="LaunchZap()">Start Application</button>
+                                                           
+                                                           
+                                                            <!-- <button type="submit" class="LaunchZapbtn"  onclick="LaunchZap()">Start Application</button> -->
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="2">
@@ -249,28 +261,23 @@
                                 <div id="StartScanDiv" class="panel">
                                         <div class="container">
                                             <h1 align="center">Start Security Scan</h1>
-                                            <hr>
+                                            <br>
                                             <div id="ScannedMsg" class="panel" style="display:none">
                                                 <p class="SuccessMsg1" id="ScannedMsgText" align="center"></p>
                                                 <p class="ErrorMsg" id="ErrorMsgText" align="center"></p>
                                             </div>
+
+                                            <label class="ServerStatusLabel" for="ServerStatuslbl"><b>Toggle Server Status</b> </label>  
+                                            <br>
+                                            <br>
+                                            <label class="switch">
+                                                    <input type="checkbox" name="onoffswitch" onclick="LaunchZap()" id="myonoffswitch1" checked>
+                                                    <span class="slider round"></span>
+                                            </label>
+                                            <br>
+                                            <br>
                                             <label for="target Application"><b>Targeted Websites :</b></label>
                                             <input type="text" placeholder="Enter Targeted Website"  id="TargetedWebsites" name="TargetedWebsites" required>
-                                            
-                                              <!-- <label for="Scan Modes"><b>Scanning Modes :</b></label>
-                                              <label class="container">Spider
-                                                  <input checked="checked"  type="radio"  id="spiderradio" name="radio">
-                                                <span class="checkmark"></span>
-                                              </label>
-                                              <label class="container">Active Scan<input type="radio" id="ascanradio" name="radio">
-                                                <span class="checkmark"></span>
-                                              </label>
-                                              <label class="container">Ajax Spider<input type="radio" id="ajspiderradio" disabled="true" name="radio">
-                                                <span class="checkmark"></span>
-                                              </label>
-                                              <label class="container">Selenium<input type="radio" id="selenradio" name="radio">
-                                                <span class="checkmark"></span>
-                                              </label> -->
 
                                               <label for="Scan Modes">Security Scan Options :</label>
                                               <select id="SelectScan" name="SelectScan">
@@ -630,14 +637,21 @@ function GetZappconfig() {
     var y = document.getElementById("StartScanDiv");
     var z = document.getElementById("ReportDisplay");
     var ScanMsg= document.getElementById('ScannedMsg');
+    var loadspin= document.getElementById('loading');
+
     if (x.style.display === "block") {
         x.style.display = "none";
         ScanMsg.style.display= "none";
     } else {
+        
         x.style.display = "block";
         y.style.display = "none";
         z.style.display = "none";
         ScanMsg.style.display= "none";
+        document.getElementById('SavedMsg').style.display='none'
+        loadspin.style.display = 'block';
+
+        GetZapStatus();
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "/api/zapconfig", true);
         xhttp.onreadystatechange = function() {
@@ -647,8 +661,10 @@ function GetZappconfig() {
                 document.getElementById("hostname").value = jsobj.zaphostname;
                 document.getElementById("port").value = jsobj.zapport 
                 document.getElementById("ApiKey").value = jsobj.zapapikey 
+                loadspin.style.display = 'none';
         }
         else{
+            loadspin.style.display = 'none';
            // alert("Error Ready State and Status : " +xhttp.readyState+" : "+xhttp.status); 
         }
         };
@@ -658,12 +674,45 @@ function GetZappconfig() {
     }
 }
 
+
+
+
+function GetZapStatus() {
+    var SeverStatus= document.getElementById('myonoffswitch');
+    var SeverStatus1= document.getElementById('myonoffswitch1');
+    var loadspin= document.getElementById('loading');
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/api/checkzapStatus", true);
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var jsobj =JSON.parse(xhttp.responseText);
+            loadspin.style.display = 'none';
+            SeverStatus.checked=true;
+            SeverStatus1.checked=true;
+        }
+        else if (xhttp.readyState == 4 && xhttp.status == 500) {
+            loadspin.style.display = 'none';
+            SeverStatus.checked=false;
+            SeverStatus1.checked=false;
+        }
+        else{
+            loadspin.style.display = 'none';
+            SeverStatus.checked=false;
+        }
+    };
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+
+    
+}
+
 function StartZapScan() {
     var x = document.getElementById("StartScanDiv");
     var y = document.getElementById("myDIV");
     var z = document.getElementById("ReportDisplay");
     var ScanMsg= document.getElementById('ScannedMsg');
     var loadspin= document.getElementById('loading');
+    var SeverStatus1= document.getElementById('myonoffswitch1');
 
     if (x.style.display === "block") {
         x.style.display = "none";
@@ -673,6 +722,7 @@ function StartZapScan() {
         z.style.display = "none";
         ScanMsg.style.display= "none";
         loadspin.style.display = 'block';
+        GetZapStatus();
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "/api/getzapoptions", true);
         xhttp.onreadystatechange = function() {
@@ -680,6 +730,7 @@ function StartZapScan() {
                 var jsobj =JSON.parse(xhttp.responseText);
                 loadspin.style.display = 'none';
                 x.style.display = "block";
+                SeverStatus1.checked=true;
                 document.getElementById("ScannedMsgText").innerHTML = "Zap Proxy Server Running Now";
                 document.getElementById("ScannedMsgText").style.display='block'
                 document.getElementById("ErrorMsgText").style.display='none'
@@ -688,8 +739,9 @@ function StartZapScan() {
             else if (xhttp.readyState == 4 && xhttp.status == 500) {
                 loadspin.style.display = 'none';
                 x.style.display = "block";
+                SeverStatus1.checked=false;
                 document.getElementById("ScannedMsgText").style.display='none'
-                document.getElementById("ErrorMsgText").innerHTML = "Zap Proxy Server not started. Please configure Zap Proxy details and launch the ZAP in Configure Tab";
+                document.getElementById("ErrorMsgText").innerHTML = "Zap Proxy Server not started. Please configure Zap Proxy details and toggle the server";
                 document.getElementById("ErrorMsgText").style.display='block'
                 ScanMsg.style.display='block';
             }
@@ -828,24 +880,46 @@ function LaunchZap(){
     var x = document.getElementById("myDIV");
     var loadspin= document.getElementById('loading');
     var SavedMsg= document.getElementById('SavedMsg');
+    var SeverStatus= document.getElementById('myonoffswitch');
     x.style.display = 'none'
     loadspin.style.display = 'block';
     
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/api/launchzap", true);
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            loadspin.style.display = 'none';
-            x.style.display = 'block'
-            SavedMsg.style.display='block';
-            document.getElementById("SavedConfigMsg").innerHTML = "Zap Proxy Server Running Now";
-        }
-        else{
-            //document.getElementById('loading').style.display = 'block';
-        }
-    };
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send();
+    if (SeverStatus.checked)
+    {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/api/launchzap", true);
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                loadspin.style.display = 'none';
+                x.style.display = 'block'
+                SavedMsg.style.display='block';
+                document.getElementById("SavedConfigMsg").innerHTML = "Zap Proxy Server Running Now";
+            }
+            else{
+                //document.getElementById('loading').style.display = 'block';
+            }
+        };
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    }
+    else{
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/api/stopzap", true);
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                loadspin.style.display = 'none';
+                x.style.display = 'block'
+                SavedMsg.style.display='block';
+                document.getElementById("SavedConfigMsg").innerHTML = "Zap Proxy Server stopped";
+
+            }
+            else{
+                //document.getElementById('loading').style.display = 'block';
+            }
+        };
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    }
 }
 
 function StartScan(){

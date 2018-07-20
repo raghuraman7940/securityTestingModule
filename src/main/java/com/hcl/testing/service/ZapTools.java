@@ -25,18 +25,19 @@ import org.zaproxy.clientapi.gen.Spider;
 
 public class ZapTools {
 	
-	//String ZAP_LOCATION = "C:\\Program Files\\OWASP\\Zed Attack Proxy\\";
-	String ZAP_LOCATION = "";
+	String ZAP_LOCATION = "C:\\Program Files\\OWASP\\Zed Attack Proxy\\";
+	String JAVA_LOCATION = "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath\\java.exe";
 	String SAVE_SESSION_DIRECTORY = "ZAPSessions\\";
 		
 	public boolean startZAP(String ZAPLOCATION) {
 		try {
 			this.ZAP_LOCATION=ZAPLOCATION;
-			String[] command = { "CMD", "/C", this.ZAP_LOCATION + "ZAP.exe" };
+			//String[] command = { "CMD", "/C", this.ZAP_LOCATION + "D:\\ZAP.bat" };
+			String[] command = { this.JAVA_LOCATION, "-jar", this.ZAP_LOCATION+"zap-2.7.0.jar","-daemon"};
 			ProcessBuilder proc = new ProcessBuilder(command);
 			proc.directory(new File(this.ZAP_LOCATION));
 			Process p = proc.start();
-			p.waitFor();
+			//p.waitFor();
 			BufferedReader input = new BufferedReader(new InputStreamReader(
 					p.getInputStream()));
 			OutputStreamWriter oStream = new OutputStreamWriter(
@@ -47,7 +48,8 @@ public class ZapTools {
 			String line;
 			while ((line = input.readLine()) != null) {
 				//kludge to tell when ZAP is started and ready
-				if (line.contains("INFO") && line.contains("org.parosproxy.paros.control.Control") && line.contains("New Session")) {
+				//if (line.contains("INFO") && line.contains("org.parosproxy.paros.control.Control") && line.contains("New Session")) {
+				if (line.contains("INFO") && line.contains("org.zaproxy.zap.DaemonBootstrap") && line.contains("ZAP is now listening")) {
 					input.close();
 					break;
 				}

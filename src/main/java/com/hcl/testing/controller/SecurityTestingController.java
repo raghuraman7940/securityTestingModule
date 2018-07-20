@@ -196,6 +196,38 @@ public class SecurityTestingController {
 	}
 	
 	
+	
+	
+	/**
+	 * Launch Zap - REST API Call with ZAP.
+	 * 
+	 * @return String String
+	 */
+	@CrossOrigin
+	@RequestMapping(value = "/checkzapStatus", method = RequestMethod.GET)
+	public ResponseEntity<String> CheckzapStatus() { 
+		String message = null;
+		boolean islaunchedzap;
+		System.out.println("GET api/checkzapStatus");
+		try {
+			islaunchedzap=zap.CheckIfZAPHasStartedOrNot(properties.getzaphostname(), properties.getzapport());
+			//System.out.println("islaunchedzap1:"+islaunchedzap);
+			if(islaunchedzap==true) {
+				zapapi = new ClientApi(properties.getzaphostname(), properties.getzapport(),properties.getzapapikey());
+				message = "{\"message\" : \"Zap launched successfully\" }";
+			}
+			else
+			{
+				return new ResponseEntity<>("ZAP not started", HttpStatus.INTERNAL_SERVER_ERROR);
+				
+			}
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+	
+	
 	/**
 	 * Stop Zap - REST API Call with ZAP.
 	 * 
