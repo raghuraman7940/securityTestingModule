@@ -1,4 +1,4 @@
-package com.hcl.testing.service;
+package com.auto.testing.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -72,7 +72,7 @@ public class ZapStarter {
 		        } while (!connectionSuccessful);
 		    }*/
 		 private static void CheckIfZAPHasStartedOrNot() throws IOException, InterruptedException {
-			 String zapApiUrl = "http://localhost:8090";
+			 String zapApiUrl = "http://localhost:8080";
 			 URL url = new URL(zapApiUrl);
 			 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			 connection.setRequestMethod("GET");

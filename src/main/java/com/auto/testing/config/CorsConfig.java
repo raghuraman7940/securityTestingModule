@@ -1,4 +1,4 @@
-package com.hcl.testing.config;
+package com.auto.testing.config;
 
 import java.io.IOException;
 import javax.servlet.Filter;

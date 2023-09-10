@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>HCL Testing Dashboard</title>
+    <title>FIS Testing Dashboard</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -45,7 +45,7 @@
 
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
-                <img src="images/hcl.png" class="img-circle profile_img">
+                <img src="images/fis.png" class="img-circle profile_img">
 
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="/" class="site_title">
@@ -323,7 +323,7 @@
             <!-- footer content -->
         <!--     <footer>
                 <div class="">
-                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>HCL</span>
+                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>FIS</span>
                     </p>
                 </div>
                 <div class="clearfix"></div>
@@ -387,7 +387,7 @@
             <!-- footer content -->
         <!--     <footer>
                 <div class="">
-                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>HCL</span>
+                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>FIS</span>
                     </p>
                 </div>
                 <div class="clearfix"></div>
@@ -452,7 +452,7 @@
             <!-- footer content -->
         <!--     <footer>
                 <div class="">
-                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>HCL</span>
+                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>FIS</span>
                     </p>
                 </div>
                 <div class="clearfix"></div>
@@ -517,7 +517,7 @@
             <!-- footer content -->
         <!--     <footer>
                 <div class="">
-                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>HCL</span>
+                    <p class="pull-right"><span class="lead"><i class="fa fa-line-chart"></i>FIS</span>
                     </p>
                 </div>
                 <div class="clearfix"></div>
@@ -793,8 +793,8 @@ function GetReports() {
             if (xhttp.responseText)
             {
                 var jsobj =JSON.parse(xhttp.responseText);
-                var mySite=jsobj.site;
-                var myObj=jsobj.site.alerts;
+                var mySite=jsobj.site[0];
+                var myObj=jsobj.site[0].alerts;
                 var txt="";
                 txt += "<table  border=1 cellspacing=1 cellpadding=1 ><tr><h4> <FONT COLOR=660000 FACE=Arial SIZE=4.5> <u>Test Details :</u></h4><td width=150 align=left bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE=Arial SIZE=2.75><b>Execution Date</b></td><td width=150 align=left><FONT COLOR=#153E7E FACE=Arial SIZE=2.75><b>"+jsobj['@generated'];
                 txt += "</b></td></tr><tr><td width=150 align=left bgcolor=#153E7E><FONT COLOR=#E0E0E0 FACE=Arial SIZE=2.75><b>Target Application</b></td><td width=150 align=left><FONT COLOR=#153E7E FACE=Arial SIZE=2.75><b>"+mySite['@name'];
@@ -803,7 +803,7 @@ function GetReports() {
                 txt += "<table width=100% border=1 cellspacing=1 cellpadding=1><tr><h4> <FONT COLOR=660000 FACE=Arial SIZE=4.5> <u>Security Alert Details :</u></h4>"
                 txt += "<tr><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertID</td><td align= center width=15% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>AlertName</td><td align= center width=10% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Risk Level</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Alert Description</td><td align= center width=25% bgcolor=#153E7E><FONT COLOR=#ffffff FACE= Arial  SIZE=2>Solution</td></tr>";
                 for (x in myObj) {
-                  //  alert("JsonIndex: " + x + "\JsonValue: " + myObj[x].name);
+                   //alert("JsonIndex: " + myObj[x].name);
                     txt += "<tr><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].pluginid + "</td><td align=center bgcolor=#ffffff><FONT COLOR=#000000 FACE= Arial  SIZE=2>" + myObj[x].name + "</td>"
                     var sFeStatus=myObj[x].riskdesc
                     if(sFeStatus.indexOf("High ")>=0){

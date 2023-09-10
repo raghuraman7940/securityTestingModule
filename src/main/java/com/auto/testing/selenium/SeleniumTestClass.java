@@ -1,4 +1,4 @@
-package com.hcl.testing.selenium;
+package com.auto.testing.selenium;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -7,8 +7,10 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import com.hcl.testing.config.ZapProperties;
+
+import com.auto.testing.config.ZapProperties;
 
 public class SeleniumTestClass {
 	WebDriver driver;
@@ -25,10 +27,12 @@ public class SeleniumTestClass {
 		Proxy proxy = new Proxy(); // org.openqa.selenium.Proxy
 		String zaproxyconfig=properties.getzaphostname()+":"+properties.getzapport();//"localhost:8080";
 		proxy.setHttpProxy(zaproxyconfig);
-		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-		capabilities.setCapability("proxy", proxy);
+		
+		//DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+		ChromeOptions options = new ChromeOptions();
+		options.setCapability("proxy", proxy);
     	System.setProperty("webdriver.chrome.driver", "./Drivers/chromedriver/chromedriver.exe");
-		driver = new ChromeDriver(capabilities);
+		driver = new ChromeDriver(options);
 		this.setDriver(driver);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		testAll();

@@ -1,7 +1,8 @@
-package com.hcl.testing.service;
+package com.auto.testing.service;
 
 import org.zaproxy.clientapi.core.ClientApi;
-import com.hcl.testing.config.ZapProperties;
+
+import com.auto.testing.config.ZapProperties;
 
 public interface SecurityTestingServiceInterface {
 

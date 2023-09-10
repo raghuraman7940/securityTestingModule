@@ -1,4 +1,4 @@
-package com.hcl.testing.controller;
+package com.auto.testing.controller;
 
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.zaproxy.clientapi.core.ClientApi;
 
-import com.hcl.testing.service.SecurityTestingServiceimpl;
-import com.hcl.testing.service.ZapTools;
+import com.auto.testing.config.ZapProperties;
+import com.auto.testing.service.SecurityTestingServiceimpl;
+import com.auto.testing.service.ZapTools;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hcl.testing.config.ZapProperties;
 
 
 @RestController
@@ -320,8 +320,10 @@ public class SecurityTestingController {
 		try {
 			//String appln = jsonObject.getString("application");//"application url";
 			message=zap.checkErrors(zapapi,TargetApplication);
-//			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
-//			message=gson.toJson(message);
+			//Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+			//message=gson.toJson(message);
+			System.out.println("generateReports: "+message);
+			System.out.println("generateReports length: "+message.length());
 		} catch (Exception e) {
 			message = e.getMessage();
 		}

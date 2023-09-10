@@ -1,12 +1,11 @@
-package com.hcl.testing.service;
+package com.auto.testing.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zaproxy.clientapi.core.ClientApi;
 
-import com.hcl.testing.selenium.SeleniumTestClass;
-import com.hcl.testing.config.ZapProperties;
-//import com.zap.client.ZapTools;
+import com.auto.testing.config.ZapProperties;
+import com.auto.testing.selenium.SeleniumTestClass;
 
 @Service
 public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterface {
@@ -26,13 +25,13 @@ public  class SecurityTestingServiceimpl implements SecurityTestingServiceInterf
 			System.out.println( "ZAP failed to start. Terminating..." );
 			System.exit(0);
 		}
-//		ZapStarter zs=new ZapStarter();
-//		try {
-//			zs.OpenZAP3();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		ZapStarter zs=new ZapStarter();
+		try {
+			zs.OpenZAP3();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,4 +1,4 @@
-package com.hcl.testing.service;
+package com.auto.testing.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -215,7 +215,7 @@ public class ZapTools {
 				
 				  // System.out.println(new String(api.core.jsonreport()));
 	            errors=new String(api.core.jsonreport());
-	          //  System.out.println("Checking Json report..."+errors);
+	            System.out.println("Checking Json report..."+errors);
 	        	this.StoreRespose("Report_ZAP",errors);
 	          
 			 //errors=new String(api.core.alertsSummary(ZAP_URI_PORT));

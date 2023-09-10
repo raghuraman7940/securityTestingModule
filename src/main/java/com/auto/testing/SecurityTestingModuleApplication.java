@@ -1,4 +1,4 @@
-package com.hcl.testing;
+package com.auto.testing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

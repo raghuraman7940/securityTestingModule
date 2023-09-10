@@ -1,4 +1,4 @@
-package com.hcl.testing.config;
+package com.auto.testing.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
