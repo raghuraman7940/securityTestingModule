@@ -1,5 +1,8 @@
 package com.auto.testing.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.zaproxy.clientapi.core.ClientApi;
 
+import com.auto.testing.service.ChatBot;
 import com.auto.testing.config.ZapProperties;
 import com.auto.testing.service.SecurityTestingServiceimpl;
 import com.auto.testing.service.ZapTools;
@@ -357,6 +361,39 @@ public class SecurityTestingController {
 		} catch (Exception e) {
 			message = e.getMessage();
 		}
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+	
+	
+
+	/**
+	 * Execute Zap Proxy options - REST API Call.
+	 * 
+	 * @return String String
+	 * @throws JSONException 
+	 */
+	@CrossOrigin
+	@RequestMapping(value = "/sendchatquery", method = RequestMethod.POST)
+	public ResponseEntity<String> executeChatbot(@RequestBody String chatmessgae) throws JSONException   {
+		System.out.println("POST api/sendchatquery  "+chatmessgae);
+		JSONObject jsonObject = new JSONObject(chatmessgae.toString());
+		String message = null;
+		String endpoint = "https://api.openai.com/v1/chat/completions";
+		String apiKey = "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";        
+	    // Prompt user for input string
+	    try {
+//		      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//		      System.out.print("Enter your message: ");
+//		      String input = reader.readLine();
+	      String reqMessage = jsonObject.getString("message");//"application url";
+	      System.out.println("Chat Message:"+reqMessage.toString());
+	      // Send input to ChatGPT API and display response
+	      message = ChatBot.sendQuery(reqMessage, endpoint, apiKey);
+	      System.out.println("Response:"+message);
+	    } catch (Exception e) {
+	      System.out.println("Unexpected error:"+e.getMessage());
+	      message = e.getMessage();
+	    }
 		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 	

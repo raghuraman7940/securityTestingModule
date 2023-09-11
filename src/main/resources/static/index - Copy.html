@@ -25,12 +25,6 @@
     <!--c3js css-->
     <link href="css/c3js/c3.min.css" rel="stylesheet">
 
- <!--  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>-->
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css'>
- <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-<link rel="stylesheet" href="css/style.css">
-
-
     <script src="js/jquery.min.js"></script>
     
 
@@ -543,32 +537,6 @@
     <div id="notif-group" class="tabbed_notifications"></div>
 </div>
 
-<div id="chat-circle" class="btn btn-raised">
-        <div id="chat-overlay"></div>
-		    <i class="material-icons">speaker_phone</i>
-	</div>
-  
-  <div class="chat-box">
-    <div class="chat-box-header">
-      ChatBot
-      <span class="chat-box-toggle"><i class="material-icons">close</i></span>
-    </div>
-    <div class="chat-box-body">
-      <div class="chat-box-overlay">   
-      </div>
-      <div class="chat-logs">
-       
-      </div><!--chat-log -->
-    </div>
-    <div class="chat-input">      
-      <form>
-        <input type="text" id="chat-input" placeholder="Send a message..."/>
-      <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons">send</i></button>
-      </form>      
-    </div>
-  </div>
-  
-
 <script src="js/bootstrap.min.js"></script>
 
 <!-- chart js -->
@@ -1002,23 +970,10 @@ function StartScan(){
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(Inputdata);
 }
-
-
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
 </script>
 
 <!--web socket communication-->
 <script src="js/index.js"></script>
-
-   <!--  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>-->
-   <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>-->
-<script  src="js/script.js"></script>
 
 
 </body>
